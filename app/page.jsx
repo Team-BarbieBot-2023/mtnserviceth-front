@@ -28,7 +28,7 @@ export default function Page() {
                 <h2
                   className="font-medium text-xs md:text-sm text-center text-teal-500"
                 >
-                  Eduard Pantazi
+                  Eduard Pantazi xxxxx
                 </h2>
                 <p className="text-xs text-gray-500 text-center">Administrator</p>
               </div>
