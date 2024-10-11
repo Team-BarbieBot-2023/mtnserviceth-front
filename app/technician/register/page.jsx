@@ -1,27 +1,25 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Input, Checkbox, Textarea, Select, Button, SelectItem } from '@nextui-org/react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
+import { Input, Checkbox, Textarea, Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {
-    const { data: session, status, update } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
+
     const [formData, setFormData] = useState({
-        id: '',
-        userId: '',
         phone: '',
-        addressId: '',
-        currentAddress: '',
         emergencyContact: '',
         nationalId: '',
+        addressId: '',
+        currentAddress: '',
         workHistory: '',
         agreeToCollect: false,
         documents: []
     });
+
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,8 +43,27 @@ export default function Page() {
         }));
     };
 
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.phone) newErrors.phone = "Phone is required";
+        if (!formData.emergencyContact) newErrors.emergencyContact = "Emergency contact is required";
+        if (!formData.nationalId) newErrors.nationalId = "National ID is required";
+        if (!formData.addressId) newErrors.addressId = "Address (ID card) is required";
+        if (!formData.currentAddress) newErrors.currentAddress = "Current address is required";
+        if (!formData.workHistory) newErrors.workHistory = "Work history is required";
+        if (!formData.agreeToCollect) newErrors.agreeToCollect = "You must agree to the PDPA consent";
+        return newErrors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate form data
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
         const formDataToSend = new FormData();
         formDataToSend.append('user_id', session.user._id);
@@ -58,7 +75,7 @@ export default function Page() {
         formDataToSend.append('work_history', formData.workHistory);
         formDataToSend.append('pdpa_consent', formData.agreeToCollect ? 1 : 0);
 
-
+        // Append documents only if they exist
         if (formData.documents.length > 0) {
             formDataToSend.append('documents', formData.documents[0]);
         }
@@ -88,30 +105,77 @@ export default function Page() {
         <div className="h-screen w-full flex">
             <div className="flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 justify-around items-center">
                 <div>
-                    <h1 className="text-white font-bold text-4xl font-sans flex gap-2">
-                        <FontAwesomeIcon icon={faScrewdriverWrench} className="h-10 w-10" />
-                        MTN Service TH
-                    </h1>
-                    <p className="text-white mt-1">
-                        If you want to find a repair technician, think of us. We provide various repair technician services.
-                    </p>
+                    <h1 className="text-white font-bold text-4xl font-sans">MTN Service TH</h1>
                 </div>
             </div>
             <div className="flex w-1/2 justify-center items-center bg-white h-screen">
                 <div className="bg-gray-100 p-8 rounded-xl shadow-lg text-center max-w-2xl">
-                    <img alt="User Avatar" className="object-cover rounded-full w-24 h-24 mx-auto mb-3" src={session?.user?.image} />
-
-                    <p className="text-sm font-normal text-green-500">{session?.user?.name}</p>
                     <h1 className="text-gray-800 font-bold text-2xl mb-3">Fill in personal information</h1>
-                    <p className="text-sm font-normal text-gray-600 mb-5">Please provide your personal details below.</p>
                     <form onSubmit={handleSubmit}>
                         <div className="text-left mb-1 grid grid-cols-3 gap-4">
-                            <Input name="phone" label="Phone" placeholder="Enter your phone number" fullWidth onChange={handleInputChange} />
-                            <Input name="emergencyContact" label="Emergency Contact" placeholder="Enter emergency contact" fullWidth onChange={handleInputChange} />
-                            <Input name="nationalId" label="National ID" placeholder="Enter your national ID" fullWidth onChange={handleInputChange} />
-                            <Textarea name="addressId" label="Address (ID Card)" placeholder="Enter address on ID card" fullWidth className="col-span-3" onChange={handleInputChange} />
-                            <Textarea name="currentAddress" label="Current Address" placeholder="Enter your current address" fullWidth className="col-span-3" onChange={handleInputChange} />
-                            <Textarea name="workHistory" label="Work History" placeholder="Enter your work history" fullWidth className="col-span-3" onChange={handleInputChange} />
+                            <Input
+                                name="phone"
+                                label={<span>Phone <span className="text-red-500">*</span></span>}
+                                placeholder="Enter your phone number"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.phone && errors.phone}
+                                helperColor="error"
+                                status={errors.phone ? 'error' : 'default'} // ใช้สำหรับ border สีแดง
+                            />
+                            <Input
+                                name="emergencyContact"
+                                label={<span>Emergency Contact <span className="text-red-500">*</span></span>}
+                                placeholder="Enter emergency contact"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.emergencyContact && errors.emergencyContact}
+                                helperColor="error"
+                                status={errors.emergencyContact ? 'error' : 'default'}
+                            />
+                            <Input
+                                name="nationalId"
+                                label={<span>National ID <span className="text-red-500">*</span></span>}
+                                placeholder="Enter your national ID"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.nationalId && errors.nationalId}
+                                helperColor="error"
+                                status={errors.nationalId ? 'error' : 'default'}
+                            />
+                            <Textarea
+                                name="addressId"
+                                label={<span>Address (ID Card) <span className="text-red-500">*</span></span>}
+                                placeholder="Enter address on ID card"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.addressId && errors.addressId}
+                                helperColor="error"
+                                status={errors.addressId ? 'error' : 'default'}
+                                className="col-span-3"
+                            />
+                            <Textarea
+                                name="currentAddress"
+                                label={<span>Current Address <span className="text-red-500">*</span></span>}
+                                placeholder="Enter your current address"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.currentAddress && errors.currentAddress}
+                                helperColor="error"
+                                status={errors.currentAddress ? 'error' : 'default'}
+                                className="col-span-3"
+                            />
+                            <Textarea
+                                name="workHistory"
+                                label={<span>Work History<span className="text-red-500">*</span></span>}
+                                placeholder="Enter your work history"
+                                fullWidth
+                                onChange={handleInputChange}
+                                helperText={errors.workHistory && errors.workHistory}
+                                helperColor="error"
+                                status={errors.workHistory ? 'error' : 'default'}
+                                className="col-span-3"
+                            />
                             <div className="col-span-3">
                                 <label className="block text-sm font-medium text-gray-700">Upload Documents</label>
                                 <input
@@ -123,7 +187,9 @@ export default function Page() {
                             </div>
                             <div className="col-span-3">
                                 <Checkbox color="primary" className='items-start' defaultSelected={false} onChange={handleCheckboxChange}>
-                                    <p className='text-sm'>The company asks for consent to collect your personal information, including first name, last name, email address, and telephone number. To be used to send news, promotions and special offers from the company. If you agree, please click "Agree" or if you do not agree.</p>
+                                    <p className='text-sm'>
+                                        The company asks for consent to collect your personal information, including first name, last name, email address, and telephone number.
+                                    </p>
                                 </Checkbox>
                             </div>
                         </div>
@@ -132,5 +198,5 @@ export default function Page() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
