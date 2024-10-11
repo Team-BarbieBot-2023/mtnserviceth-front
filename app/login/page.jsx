@@ -1,31 +1,31 @@
 "use client";
+import React from 'react';
 
 import { Button } from '@nextui-org/react';
 import { useSession, signIn, signOut } from "next-auth/react";
-import React from 'react';
+import { useRouter } from 'next/navigation';
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
 
 function Page() {
+
+    const router = useRouter();
+
+
     const { data: session } = useSession();
 
     if (session) {
-        return (
-            <>
-                <div className="h-screen flex justify-center items-center bg-gray-50">
-                    <div>
-                        <h1 className="text-2xl font-bold mb-4">Signed in as {session.user.email}</h1>
-                        <Button onClick={() => signOut()} color="error">Sign out</Button>
-                    </div>
-                </div>
-            </>
-        );
+        router.push('/');
     }
 
     return (
-        <div className="h-screen flex">
+        <div className="h-screen w-full flex">
             <div className="flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 justify-around items-center">
                 <div>
                     <h1 className="text-white font-bold text-4xl font-sans flex gap-2">
-                        <img src="mtn-icon.svg" className="h-10 w-10" alt="MTN Icon" />
+                        <FontAwesomeIcon icon={faScrewdriverWrench} className="h-10 w-10" />
                         MTN Service TH
                     </h1>
                     <p className="text-white mt-1">
@@ -33,19 +33,14 @@ function Page() {
                     </p>
                 </div>
             </div>
-            <div className="flex w-1/2 justify-center items-center bg-white">
-                <form className="bg-white">
+            <div className="flex w-1/2 justify-center items-center bg-white h-screen">
+                <div className="bg-gray-100 p-8 rounded-xl shadow-lg max-w-md text-center">
                     <h1 className="text-gray-800 font-bold text-2xl mb-1">Hello Again!</h1>
                     <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
-                    <Button
-                        onClick={() => signIn('google')}
-                        className="bg-gray-200 px-10 py-4"
-                        radius="full"
+                    <Button onClick={() => signIn('google')} className="bg-gray-200 px-10 py-4" radius="full"
                         endContent={<img src="google.svg" className="h-6 w-6" alt="Google Icon" />}
-                    >
-                        Continue with Google
-                    </Button>
-                </form>
+                    >Continue with Google</Button>
+                </div>
             </div>
         </div>
     );

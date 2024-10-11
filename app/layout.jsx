@@ -1,6 +1,12 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
+import Menuber from "@/components/ManuBer";
+
+
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,9 +27,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-tr from-blue-800 to-purple-700`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} `}>
         <Providers>
-          {children}
+          <main className="flex">
+            <Menuber />
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
