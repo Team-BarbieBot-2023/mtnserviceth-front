@@ -11,7 +11,7 @@ export const authOptions = {
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
             try {
-                const response = await fetch('http://localhost:3001/users/login', {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -40,10 +40,8 @@ export const authOptions = {
             }
         },
         async jwt({ token, trigger, session }) {
-            // กรณีที่ user ลงชื่อเข้าใช้ ให้เพิ่ม role ใน token
             if (trigger === 'signIn' || trigger === 'update') {
-                // ดึง role จาก API 
-                const response = await fetch(`http://localhost:3001/users/checkrole/${token.sub}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/checkrole/${token.sub}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -54,6 +52,7 @@ export const authOptions = {
                     const data = await response.json();
                     token.role = data[0].role || "";
                     token._id = data[0].id || "";
+                    token.status = data[0].status || "";
                 } else {
                     console.error("Failed to fetch role");
                     token.role = ""; // กำหนด role เป็นค่าว่างถ้าดึงข้อมูลไม่ได้
@@ -72,6 +71,7 @@ export const authOptions = {
             session.user.id = token.sub;
             session.user.role = token.role || "";
             session.user._id = token._id || "";
+            session.user.status = token.status || "";
             return session;
         },
     },

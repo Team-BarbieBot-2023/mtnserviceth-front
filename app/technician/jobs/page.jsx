@@ -1,4 +1,4 @@
-import Home from '@/components/Home';
+import Jobs from '@/components/technician/Jobs';
 
 const getData = async () => {
   try {
@@ -22,7 +22,7 @@ export default async function Page() {
 
   return (
 
-    <Home data={data} />
+    <Jobs data={data} />
 
   );
 }

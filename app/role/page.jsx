@@ -16,7 +16,7 @@ function Page() {
     const handleSubmit = async () => {
         setLoading(true);
 
-        const response = await fetch('http://localhost:3001/users/role', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/role`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function Page() {
 
         if (response.ok) {
             const data = await response.json();
-            const userRole = data.role;
+            const userRole = data.role
             await update({ role: userRole });
 
             switch (userRole) {
