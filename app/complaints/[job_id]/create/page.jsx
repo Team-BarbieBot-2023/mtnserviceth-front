@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import FormComplaint from "@/components/complaint/FormComplaint";
+import FormComplaintComponent from "@/components/user/complaint/FormComplaintComponent";
 const getJobByID = async (id) => {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/complaints/getjobbyid/${id}`, {
@@ -21,7 +21,6 @@ export default async function Page({params}) {
     const session = await getServerSession(authOptions)
     const { job_id } = params;
     const jobInfo = await getJobByID(job_id);
-    console.log(jobInfo);
     const data =  { user_id : session.user._id, 
         technician_id: jobInfo[0].technician_id,
         job_id: job_id,
@@ -50,7 +49,7 @@ export default async function Page({params}) {
             </div>   
             </div>
             </div>
-            <FormComplaint data={data}/>
+            <FormComplaintComponent data={data}/>
             </div>
         </div>
         <div className="basis-2/5 md:flex md:justify-center md:overflow-hidden">

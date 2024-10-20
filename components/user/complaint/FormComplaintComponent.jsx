@@ -52,7 +52,7 @@ export const RadioComplaintTitle=({title,setTitle})=>{
 }
 
 
-export default function FormComplaint({ data }) {
+export default function FormComplaintComponent({ data }) {
   const router = useRouter();
     const [complaint, setComplaint] = useState(
         { user_id : data.user_id, 

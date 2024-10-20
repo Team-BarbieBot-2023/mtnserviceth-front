@@ -1,6 +1,6 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faThumbsDown} from '@fortawesome/free-solid-svg-icons';
+import {faThumbsDown,faPersonHarassing} from '@fortawesome/free-solid-svg-icons';
 import React from "react";
 import {Button,Table, TableHeader, TableColumn, TableBody, TableRow,TableCell, Pagination, getKeyValue
 } from "@nextui-org/react";
@@ -82,7 +82,13 @@ export default function Tables({ data }) {
               }
               if (columnKey === "button") {
                 value = <div className='flex'>
-                  <Button onClick={() => router.push(`/complaints/${Number(item.id)}/create`)} className='px-[0] py-[0]' color="primary" variant="light"><FontAwesomeIcon icon={faThumbsDown} /></Button></div>;
+                   {item.status!=='pending' ? (
+                    <Button onClick={() => router.push(`/complaints/${Number(item.id)}/create`)} 
+                    className='px-[10px] py-[0]' 
+                    color="warning" 
+                    variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>Complaint</Button>
+                    ): (<p></p>)}
+                  </div>;
               }
               const cellAlignment =
                 columnKey === "customer_details" ? "text-left" : "text-center";

@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcaseMedical, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcaseMedical, faCirclePlus, faTimeline } from "@fortawesome/free-solid-svg-icons";
 import { Button, Modal, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react";
 import Table from "@/components/user/addjobs/Tables";
 import Add from "@/components/user/addjobs/Add";
+import HistoriesComplaintComponent from "@/components/user/complaint/HistoriesCompaintComponent";
 
 export default function AddJobs({ initialData, userId }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [data, setData] = useState(initialData); // Store data in state
-
+    const [modalby,setModalBy] = useState('J');
     // Fetch data function to be reused
     const fetchData = useCallback(async () => {
         try {
@@ -24,6 +25,14 @@ export default function AddJobs({ initialData, userId }) {
     }, [userId]);
 
     // Close modal and refresh data
+    const handleAddJob=()=>{
+        setModalBy('J');
+        onOpen();
+    }
+    const handleCompaintHistories=()=>{
+        setModalBy('C');
+        onOpen();
+    }
     const handleClose = () => {
         onOpenChange(false); // Close the modal
         fetchData(); // Refresh the data
@@ -38,10 +47,18 @@ export default function AddJobs({ initialData, userId }) {
                             <FontAwesomeIcon icon={faBriefcaseMedical} className="h-10 w-10" /> Submit Job
                         </span>
                     </div>
-                    <div className="w-full text-end">
+                    <div className="w-full text-end gap-2 flex justify-end">
+                    <Button
+                            startContent={<FontAwesomeIcon icon={faTimeline} className="h-5 w-5 mx-[10px]" />}
+                            onPress={handleCompaintHistories}
+                            color="default"
+                            auto
+                        >
+                            Complaint his..
+                    </Button>
                         <Button
                             startContent={<FontAwesomeIcon icon={faCirclePlus} className="h-5 w-5" />}
-                            onPress={onOpen}
+                            onPress={handleAddJob}
                             color="primary"
                             auto
                         >
@@ -60,7 +77,13 @@ export default function AddJobs({ initialData, userId }) {
                             isKeyboardDismissDisabled={true}
                         >
                             <ModalContent>
-                                {(onClose) => <Add onClose={handleClose} />}
+                            {(onClose) => {
+                                    return modalby === 'J' ? (
+                                        <Add onClose={handleClose} />
+                                    ) : (
+                                        <HistoriesComplaintComponent onClose={handleClose} />
+                                    );
+                                }}
                             </ModalContent>
                         </Modal>
                     </div>
