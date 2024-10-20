@@ -1,8 +1,8 @@
 "use client";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faThumbsDown} from '@fortawesome/free-solid-svg-icons';
 import React from "react";
-import {
-  Table, TableHeader, TableColumn, TableBody, TableRow,
-  TableCell, Pagination, getKeyValue
+import {Button,Row, Col, Tooltip,Table, TableHeader, TableColumn, TableBody, TableRow,TableCell, Pagination, getKeyValue
 } from "@nextui-org/react";
 
 // Helper to safely parse JSON fields
@@ -53,6 +53,10 @@ export default function Tables({ data }) {
     return data.slice(start, end);
   }, [page, data]);
 
+  const handleReportAction = (id) => {
+    console.log(id);
+  }
+
   return (
     <Table
       aria-label="Example table with client side pagination"
@@ -75,6 +79,7 @@ export default function Tables({ data }) {
         <TableColumn key="customer_details">CUSTOMER DETAILS</TableColumn>
         <TableColumn className="text-center" key="created_at">CREATED AT</TableColumn>
         <TableColumn className="text-center" key="status">STATUS</TableColumn>
+        <TableColumn className="text-center" key="button"></TableColumn>
       </TableHeader>
       <TableBody items={items}>
         {(item) => (
@@ -113,7 +118,9 @@ export default function Tables({ data }) {
                     value = "ไม่ทราบสถานะ";
                 }
               }
-
+              if (columnKey === "button") {
+                value = <div className='flex'><Button onClick={()=>{console.log(item)}} className='px-[0] py-[0]' color="primary" variant="light"><FontAwesomeIcon icon={faThumbsDown} /></Button></div>;
+              }
               const cellAlignment =
                 columnKey === "customer_details" ? "text-left" : "text-center";
 
