@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef} from "react";
 import { Input, Textarea, Button, RadioGroup, Radio, useRadio, VisuallyHidden, cn } from "@nextui-org/react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/navigation";
 export const RadioComplaintTitleOption = (props) => {
     const {
       Component,
@@ -53,6 +53,7 @@ export const RadioComplaintTitle=({title,setTitle})=>{
 
 
 export default function FormComplaint({ data }) {
+  const router = useRouter();
     const [complaint, setComplaint] = useState(
         { user_id : data.user_id, 
             technician_id: data.technician_id,
@@ -80,6 +81,8 @@ export default function FormComplaint({ data }) {
                 body: JSON.stringify(complaint),
               });
               if (result.ok) {
+                alert('ส่งเรื่องร้องเรียนเข้าระบบเรียบร้อยแล้ว กรุณารอการตรวจสอบ');
+                console.log(result.ok)
                 router.push('/jobs');
               }
         } catch (error) {

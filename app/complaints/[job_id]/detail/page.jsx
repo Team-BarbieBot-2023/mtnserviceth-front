@@ -9,11 +9,6 @@ function Page() {
     const { data: session } = useSession();
     const [value, setValue] = React.useState(new Set([]));
     const [touched, setTouched] = React.useState(false);
-
-    const jobs = [
-        {key: "1", label: "ซ่อมท่อประปา"},
-        {key: "2", label: "ปรับปรุงทางเดินหน้าชั้น 14"},
-      ];
     if (!session) {
        // router.push('/');
     }

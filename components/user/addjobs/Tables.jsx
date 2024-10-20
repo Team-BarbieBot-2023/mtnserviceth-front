@@ -2,49 +2,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faThumbsDown} from '@fortawesome/free-solid-svg-icons';
 import React from "react";
-import {Button,Row, Col, Tooltip,Table, TableHeader, TableColumn, TableBody, TableRow,TableCell, Pagination, getKeyValue
+import {Button,Table, TableHeader, TableColumn, TableBody, TableRow,TableCell, Pagination, getKeyValue
 } from "@nextui-org/react";
-
-// Helper to safely parse JSON fields
-const parseJSON = (jsonString) => {
-  try {
-    return JSON.parse(jsonString);
-  } catch (error) {
-    console.error("Failed to parse JSON:", error);
-    return jsonString;
-  }
-};
-
-// Helper to format date and time
-const formatDateTime = (dateString) => {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('th-TH', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(date);
-  } catch (error) {
-    console.error("Failed to format date:", error);
-    return dateString;
-  }
-};
-
-const formatDate = (dateString) => {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('th-TH', {
-      dateStyle: 'medium',
-    }).format(date);
-  } catch (error) {
-    console.error("Failed to format date:", error);
-    return dateString;
-  }
-};
+import { useRouter } from "next/navigation";
 
 export default function Tables({ data }) {
+  const router = useRouter();
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 13;
-
   const pages = Math.ceil(data.length / rowsPerPage);
 
   const items = React.useMemo(() => {
@@ -53,9 +18,6 @@ export default function Tables({ data }) {
     return data.slice(start, end);
   }, [page, data]);
 
-  const handleReportAction = (id) => {
-    console.log(id);
-  }
 
   return (
     <Table
@@ -119,7 +81,8 @@ export default function Tables({ data }) {
                 }
               }
               if (columnKey === "button") {
-                value = <div className='flex'><Button onClick={()=>{console.log(item)}} className='px-[0] py-[0]' color="primary" variant="light"><FontAwesomeIcon icon={faThumbsDown} /></Button></div>;
+                value = <div className='flex'>
+                  <Button onClick={() => router.push(`/complaints/${Number(item.id)}/create`)} className='px-[0] py-[0]' color="primary" variant="light"><FontAwesomeIcon icon={faThumbsDown} /></Button></div>;
               }
               const cellAlignment =
                 columnKey === "customer_details" ? "text-left" : "text-center";
@@ -132,3 +95,39 @@ export default function Tables({ data }) {
     </Table>
   );
 }
+// Helper to safely parse JSON fields
+const parseJSON = (jsonString) => {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.error("Failed to parse JSON:", error);
+    return jsonString;
+  }
+};
+
+// Helper to format date and time
+const formatDateTime = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('th-TH', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(date);
+  } catch (error) {
+    console.error("Failed to format date:", error);
+    return dateString;
+  }
+};
+
+const formatDate = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('th-TH', {
+      dateStyle: 'medium',
+    }).format(date);
+  } catch (error) {
+    console.error("Failed to format date:", error);
+    return dateString;
+  }
+};
+

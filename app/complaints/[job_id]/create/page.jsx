@@ -21,6 +21,7 @@ export default async function Page({params}) {
     const session = await getServerSession(authOptions)
     const { job_id } = params;
     const jobInfo = await getJobByID(job_id);
+    console.log(jobInfo);
     const data =  { user_id : session.user._id, 
         technician_id: jobInfo[0].technician_id,
         job_id: job_id,
