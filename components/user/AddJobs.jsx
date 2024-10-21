@@ -6,7 +6,7 @@ import { faBriefcaseMedical, faCirclePlus, faTimeline } from "@fortawesome/free-
 import { Button, Modal, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react";
 import Table from "@/components/user/addjobs/Tables";
 import Add from "@/components/user/addjobs/Add";
-import HistoriesComplaintComponent from "@/components/user/complaint/HistoriesCompaintComponent";
+import MyCompaintsComponent from "@/components/user/complaint/MyCompaintsComponent";
 
 export default function AddJobs({ initialData, userId }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -54,7 +54,7 @@ export default function AddJobs({ initialData, userId }) {
                             color="default"
                             auto
                         >
-                            Complaint his..
+                            My Complaints
                     </Button>
                         <Button
                             startContent={<FontAwesomeIcon icon={faCirclePlus} className="h-5 w-5" />}
@@ -81,7 +81,7 @@ export default function AddJobs({ initialData, userId }) {
                                     return modalby === 'J' ? (
                                         <Add onClose={handleClose} />
                                     ) : (
-                                        <HistoriesComplaintComponent onClose={handleClose} />
+                                        <MyCompaintsComponent userId={userId}  onClose={handleClose} />
                                     );
                                 }}
                             </ModalContent>
