@@ -40,12 +40,9 @@ export default function Page() {
     const canView = (role, allowedRoles) => allowedRoles.includes(role);
     const userRole = session.user.role;
 
-    // Function to check if the menu item is active
     const isActive = (path) => {
-        // Strict match for the home route "/"
         if (path === '/' && pathname === '/') return 'bg-gradient-to-tr from-blue-800 to-purple-700 text-white';
 
-        // Exact match for other routes to avoid overlapping
         return pathname === path ? 'bg-gradient-to-tr from-blue-800 to-purple-700 text-white' : '';
     };
 
@@ -74,7 +71,6 @@ export default function Page() {
                     </div>
                     <div id="menu" className="flex flex-col space-y-2">
 
-                        {/* User Menu */}
                         {canView(userRole, ['U']) && (
                             <>
                                 <a onClick={() => router.push('/')}
@@ -100,7 +96,6 @@ export default function Page() {
                             </>
                         )}
 
-                        {/* Technician Menu */}
                         {canView(userRole, ['T']) && (
                             <>
                                 <a onClick={() => router.push('/')}

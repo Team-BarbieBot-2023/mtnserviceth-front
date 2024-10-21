@@ -56,29 +56,31 @@ export default function Jobs({ data }) {
     return data.slice(start, end);
   }, [page, data]);
 
-  const handleJobAction = (jobId) => {
-    const data = {
-      user_id: session.user._id,
-      technician_id: 0,
-      status: "in_progress",
+  const handleJobAction = async (jobId) => {
+    const data = { user_id: session.user._id, technician_id: 0, status: "in_progress", }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/updatestatusjobsinprogress/${jobId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch technician data: ${response.statusText}`);
+      }
+      window.location = `${process.env.NEXT_PUBLIC_BASE_URL}/technician/schedule`
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
     }
 
-    fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/taskthisjob/${jobId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        alert('Job successfully taken!');
-      } else {
-        alert('Failed to take the job.');
-      }
-    }).catch((error) => console.error('Error:', error));
   };
 
   if (!session) {
     return null;
   }
+
 
   return (
     <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9">
@@ -112,7 +114,7 @@ export default function Jobs({ data }) {
                 <TableColumn className="text-center" key="created_at">CREATED AT</TableColumn>
                 <TableColumn className="text-center" key="button"></TableColumn>
               </TableHeader>
-              <TableBody items={items}>
+              <TableBody items={items} emptyContent={"No Data."}>
                 {(item) => (
                   <TableRow key={item.id}>
                     {(columnKey) => {

@@ -1,10 +1,10 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Editprofile from '@/components/technician/Editprofile';
+import Schedule from '@/components/technician/Schedule';
 
 const getData = async (id) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/technicians/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/schedule/${id}`, {
             method: 'GET',
         });
 
@@ -26,9 +26,9 @@ export default async function Page() {
         return null;
     }
 
+    const initialData = await getData(session.user._id);
 
-
-    const data = await getData(session.user._id);
-
-    return <Editprofile data={data} />;
+    return (
+        <Schedule initialData={initialData} userId={session.user._id} />
+    );
 }

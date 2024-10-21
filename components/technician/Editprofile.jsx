@@ -9,8 +9,6 @@ export default function Editprofile({ data }) {
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);
 
-  console.log(data);
-
   const [formData, setFormData] = useState({
     phone: data.phone || "",
     emergency_contact: data.emergency_contact || "",
@@ -84,17 +82,13 @@ export default function Editprofile({ data }) {
   const handleEditToggle = () => setIsEditing((prev) => !prev);
 
   const handleCancel = () => {
-    setFormData(data); // Reset to original data
+    setFormData(data);
     setIsEditing(false);
 
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Clear file input
+      fileInputRef.current.value = "";
     }
   };
-
-  if (!data) {
-    return null;
-  }
 
   return (
     <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9">
