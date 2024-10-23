@@ -125,6 +125,20 @@ export default function Page() {
                                 </a>
                             </>
                         )}
+                        {canView(userRole, ['A']) && (
+                            <>
+                                <a onClick={() => router.push('/')}
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/')}`}>
+                                    <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
+                                    <span className='ml-3'>Home</span>
+                                </a>
+                                <a onClick={() => router.push('/admin/complaints')}
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/jobs')}`}>
+                                    <FontAwesomeIcon icon={faBriefcase} className="w-5 h-5" />
+                                    <span className='ml-3'>Manage Complaints</span>
+                                </a>
+                            </>
+                        )}
 
                         {/* Logout */}
                         <a onClick={() => signOut({ callbackUrl: '/' })}
