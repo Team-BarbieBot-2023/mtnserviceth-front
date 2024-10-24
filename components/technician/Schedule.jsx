@@ -158,7 +158,8 @@ export default function Schedule({ initialData, userId }) {
                                     </div>
 
                                     <div className="mt-4 text-right">
-                                        <Button color="primary" auto onPress={() => openModal(data)}>Mark as Completed</Button>
+                                        {data.status === "in_progress" && <Button color="primary" auto onPress={() => openModal(data)}>Mark as Completed</Button>}
+                                        
                                     </div>
                                 </div>
 

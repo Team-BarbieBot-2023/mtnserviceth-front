@@ -1,27 +1,50 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBars,
-    faFileAlt,
-    faTasks,
-    faStar,
-    faUserEdit,
-    faClipboardCheck,
-    faSignOutAlt,
-    faHome,
-    faBriefcase
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faFileAlt, faTasks, faStar, faUserEdit, faClipboardCheck, faSignOutAlt, faHome, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { signOut, useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { faUpwork } from '@fortawesome/free-brands-svg-icons';
 
-export default function Page() {
-    const { data: session, status, update } = useSession();
+// Function to fetch review data based on user id
+const getData = async (id) => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review/${id}`, {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch review data: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching review data:", error);
+        return null;
+    }
+};
+
+export default function ManuBer() {
+    const { data: session, status } = useSession();
+    const [dataReview, setDataReview] = useState(null); // State to store fetched review data
+    const [loading, setLoading] = useState(true); // State to manage loading state
     const router = useRouter();
     const pathname = usePathname();
 
     const excludedPaths = ["/login", "/role", "/technician/register", "/impervious"];
+
+    // Fetch review data when session is available
+    useEffect(() => {
+        if (session) {
+            const fetchReviewData = async () => {
+                setLoading(true); // Start loading
+                const reviewData = await getData(session.user._id); // Fetch data using user id
+                setDataReview(reviewData); // Set the data to state
+                setLoading(false); // Stop loading
+            };
+            fetchReviewData();
+        }
+    }, [session]);
 
     useEffect(() => {
         if (!session && !excludedPaths.some((path) => pathname.startsWith(path))) {
@@ -29,24 +52,20 @@ export default function Page() {
         }
     }, [pathname, session, excludedPaths]);
 
-    if (!session) {
-        return null;
+    if (loading) {
+        return <div>Loading...</div>; // Show loading indicator while fetching data
     }
 
-    if (excludedPaths.some((path) => pathname.startsWith(path))) {
-        return null;
+    if (!session || excludedPaths.some((path) => pathname.startsWith(path))) {
+        return null; // Hide menu for excluded paths or if session is unavailable
     }
 
     const canView = (role, allowedRoles) => allowedRoles.includes(role);
     const userRole = session.user.role;
 
     const isActive = (path) => {
-        if (path === '/' && pathname === '/') return 'bg-gradient-to-tr from-blue-800 to-purple-700 text-white';
-
         return pathname === path ? 'bg-gradient-to-tr from-blue-800 to-purple-700 text-white' : '';
     };
-
-
 
     return (
         <main>
@@ -71,6 +90,7 @@ export default function Page() {
                     </div>
                     <div id="menu" className="flex flex-col space-y-2">
 
+                        {/* User Menu */}
                         {canView(userRole, ['U']) && (
                             <>
                                 <a onClick={() => router.push('/')}
@@ -91,11 +111,12 @@ export default function Page() {
                                 <a onClick={() => router.push('/review')}
                                     className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/review')}`}>
                                     <FontAwesomeIcon icon={faStar} className="w-5 h-5" />
-                                    <span className='ml-3'>Review</span>
+                                    <span className='ml-3'>Review</span><span className='bg-red-600 px-[6px] ml-auto rounded-full text-white'>{dataReview.length}</span>
                                 </a>
                             </>
                         )}
 
+                        {/* Technician Menu */}
                         {canView(userRole, ['T']) && (
                             <>
                                 <a onClick={() => router.push('/')}

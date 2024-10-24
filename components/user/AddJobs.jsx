@@ -10,9 +10,9 @@ import HistoriesComplaintComponent from "@/components/user/complaint/HistoriesCo
 
 export default function AddJobs({ initialData, userId }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [data, setData] = useState(initialData); // Store data in state
+    const [data, setData] = useState(initialData);
     const [modalby,setModalBy] = useState('J');
-    // Fetch data function to be reused
+
     const fetchData = useCallback(async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/${userId}`);

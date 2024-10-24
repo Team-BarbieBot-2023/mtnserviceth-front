@@ -1,23 +1,30 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faThumbsDown,faPersonHarassing} from '@fortawesome/free-solid-svg-icons';
-import React from "react";
-import {Button,Table, TableHeader, TableColumn, TableBody, TableRow,TableCell, Pagination, getKeyValue
+import { faThumbsDown, faPersonHarassing } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import {
+  Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 export default function Tables({ data }) {
   const router = useRouter();
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
   const rowsPerPage = 13;
-  const pages = Math.ceil(data.length / rowsPerPage);
+
+  const validData = Array.isArray(data) ? data : [];
+
+  const pages = validData.length > 0 ? Math.ceil(validData.length / rowsPerPage) : 1;
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return data.slice(start, end);
-  }, [page, data]);
+    return validData.slice(start, end);
+  }, [page, validData]);
 
+  if (validData.length === 0) {
+    return <div>No data available</div>;
+  }
 
   return (
     <Table
@@ -82,13 +89,13 @@ export default function Tables({ data }) {
               }
               if (columnKey === "button") {
                 value = <div className='flex'>
-                   {item.status!=='pending' ? (
-                    <Button onClick={() => router.push(`/complaints/${Number(item.id)}/create`)} 
-                    className='px-[10px] py-[0]' 
-                    color="warning" 
-                    variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>Complaint</Button>
-                    ): (<p></p>)}
-                  </div>;
+                  {item.status !== 'pending' ? (
+                    <Button onClick={() => router.push(`/complaints/${Number(item.id)}/create`)}
+                      className='px-[10px] py-[0]'
+                      color="warning"
+                      variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>Complaint</Button>
+                  ) : (<p></p>)}
+                </div>;
               }
               const cellAlignment =
                 columnKey === "customer_details" ? "text-left" : "text-center";
