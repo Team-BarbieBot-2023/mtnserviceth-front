@@ -5,8 +5,8 @@ import { signOut, useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { faUpwork } from '@fortawesome/free-brands-svg-icons';
+import { Tooltip } from '@nextui-org/react';
 
-// Function to fetch review data based on user id
 const getData = async (id) => {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review/${id}`, {
@@ -26,21 +26,20 @@ const getData = async (id) => {
 
 export default function ManuBer() {
     const { data: session, status } = useSession();
-    const [dataReview, setDataReview] = useState(null); // State to store fetched review data
-    const [loading, setLoading] = useState(true); // State to manage loading state
+    const [dataReview, setDataReview] = useState(null);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
     const pathname = usePathname();
 
     const excludedPaths = ["/login", "/role", "/technician/register", "/impervious"];
 
-    // Fetch review data when session is available
     useEffect(() => {
         if (session) {
             const fetchReviewData = async () => {
-                setLoading(true); // Start loading
-                const reviewData = await getData(session.user._id); // Fetch data using user id
-                setDataReview(reviewData); // Set the data to state
-                setLoading(false); // Stop loading
+                setLoading(true);
+                const reviewData = await getData(session.user._id) || [];
+                setDataReview(reviewData.filter(o => o.rating == null));
+                setLoading(false);
             };
             fetchReviewData();
         }
@@ -53,11 +52,19 @@ export default function ManuBer() {
     }, [pathname, session, excludedPaths]);
 
     if (loading) {
-        return <div>Loading...</div>; // Show loading indicator while fetching data
+        return (
+            <div id="sidebar" className="bg-white h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out">
+                <div className="space-y-6 md:space-y-10 mt-10">
+                    <div>
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (!session || excludedPaths.some((path) => pathname.startsWith(path))) {
-        return null; // Hide menu for excluded paths or if session is unavailable
+        return null;
     }
 
     const canView = (role, allowedRoles) => allowedRoles.includes(role);
@@ -111,7 +118,12 @@ export default function ManuBer() {
                                 <a onClick={() => router.push('/review')}
                                     className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/review')}`}>
                                     <FontAwesomeIcon icon={faStar} className="w-5 h-5" />
-                                    <span className='ml-3'>Review</span><span className='bg-red-600 px-[6px] ml-auto rounded-full text-white'>{dataReview.length}</span>
+                                    <span className='ml-3'>Review</span> {
+                                        dataReview.length > 0 &&
+                                        <Tooltip content="Rates and comments have not yet been specified.">
+                                            <span className='bg-red-600 px-[6px] ml-auto rounded-full text-white'>{dataReview.length}</span>
+                                        </Tooltip>
+                                    }
                                 </a>
                             </>
                         )}
