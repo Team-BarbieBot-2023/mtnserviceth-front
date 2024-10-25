@@ -96,8 +96,6 @@ export default function ManuBer() {
                         </div>
                     </div>
                     <div id="menu" className="flex flex-col space-y-2">
-
-                        {/* User Menu */}
                         {canView(userRole, ['U']) && (
                             <>
                                 <a onClick={() => router.push('/')}
@@ -109,11 +107,6 @@ export default function ManuBer() {
                                     className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/jobs')}`}>
                                     <FontAwesomeIcon icon={faTasks} className="w-5 h-5" />
                                     <span className='ml-3'>Submit Job</span>
-                                </a>
-                                <a onClick={() => router.push('/status')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/status')}`}>
-                                    <FontAwesomeIcon icon={faClipboardCheck} className="w-5 h-5" />
-                                    <span className='ml-3'>Job Status</span>
                                 </a>
                                 <a onClick={() => router.push('/review')}
                                     className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/review')}`}>
@@ -128,7 +121,6 @@ export default function ManuBer() {
                             </>
                         )}
 
-                        {/* Technician Menu */}
                         {canView(userRole, ['T']) && (
                             <>
                                 <a onClick={() => router.push('/')}
@@ -173,7 +165,6 @@ export default function ManuBer() {
                             </>
                         )}
 
-                        {/* Logout */}
                         <a onClick={() => signOut({ callbackUrl: '/' })}
                             className="flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer">
                             <FontAwesomeIcon icon={faSignOutAlt} className="w-5 h-5" />
