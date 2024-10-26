@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
-import Menuber from "@/components/ManuBer";
+import MenuBarComponent from "@/components/MenuBarComponent";
 
 
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} `}>
         <Providers>
           <main className="flex">
-            <Menuber />
+            <MenuBarComponent />
             {children}
           </main>
         </Providers>

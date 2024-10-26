@@ -25,7 +25,7 @@ const getData = async (id) => {
     }
 };
 
-export default function MenuBer() {
+export default function MenuBarComponent() {
     const { data: session, status } = useSession();
     const [dataReview, setDataReview] = useState([]);
     const [loading, setLoading] = useState(true);
