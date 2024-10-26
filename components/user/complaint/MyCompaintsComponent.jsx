@@ -9,9 +9,10 @@ export default function MyComplaintComponent({userId}) {
     const fetchData = async () => {
     // ดึงข้อมูลจาก backend API
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/complaints/getmycomplaints/${userId}`);
-      const result = await res.json();
-      console.log(result);
-      setData(result);
+      if(res.ok) {
+        const result = await res.json();
+        setData(result);
+      }
     };
     fetchData();
   }, []);
