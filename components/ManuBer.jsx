@@ -12,12 +12,13 @@ const getData = async (id) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review/${id}`, {
             method: "GET",
         });
+        let result = [];
+         if (response.ok) {
+            result = await response.json();
+            // throw new Error(`Failed to fetch review data: ${response.statusText}`);
+         }
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch review data: ${response.statusText}`);
-        }
-
-        return await response.json();
+        return result;
     } catch (error) {
         console.error("Error fetching review data:", error);
         return null;
@@ -26,7 +27,7 @@ const getData = async (id) => {
 
 export default function ManuBer() {
     const { data: session, status } = useSession();
-    const [dataReview, setDataReview] = useState(null);
+    const [dataReview, setDataReview] = useState([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const pathname = usePathname();
@@ -38,10 +39,14 @@ export default function ManuBer() {
             const fetchReviewData = async () => {
                 setLoading(true);
                 const reviewData = await getData(session.user._id) || [];
-                setDataReview(reviewData.filter(o => o.rating == null));
+                setDataReview(reviewData.filter(o => o.rating == null) || []);
                 setLoading(false);
             };
-            fetchReviewData();
+            if(session.user.role=='U'){
+                fetchReviewData();                
+            }else{
+                setLoading(false);
+            }
         }
     }, [session]);
 
