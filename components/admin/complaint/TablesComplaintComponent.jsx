@@ -1,16 +1,14 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsDown, faPersonHarassing } from '@fortawesome/free-solid-svg-icons';
+import { faPersonHarassing } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import {useDisclosure,
-  Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue
+  Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination
 } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
-export default function TablesComplantComponent({ data }) {
+export default function TablesComplantComponent({ data,fetchData}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [objData, setObjData] = useState(null)
-  const router = useRouter();
   const [page, setPage] = useState(1);
   const rowsPerPage = 13;
   const onAction=(data)=>{
@@ -18,6 +16,7 @@ export default function TablesComplantComponent({ data }) {
     setObjData(data);
     onOpen();
   }
+
   const validData = Array.isArray(data) ? data : [];
 
   const pages = validData.length > 0 ? Math.ceil(validData.length / rowsPerPage) : 1;
@@ -90,10 +89,15 @@ export default function TablesComplantComponent({ data }) {
               }
               if (columnKey === "button") {
                 value = <div className='flex'>
-                <Button onClick={() => onAction(item)}
-                      className='px-[10px] py-[0]'
-                      color="warning"
-                      variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>ดำเนินการ</Button>
+                  {item.technician_id>0?
+                    (
+                    <Button onClick={() => onAction(item)}
+                    className='px-[10px] py-[0]'
+                    color="warning"
+                    variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>ดำเนินการ</Button>
+                    ):(<p></p>)
+                  }
+
                 </div>;
               }
               const cellAlignment =
@@ -106,8 +110,11 @@ export default function TablesComplantComponent({ data }) {
       </TableBody>
     </Table>
     
-<ModalActionComponent isOpen={isOpen} onOpenChange={onOpenChange} obj={objData}/>
-    </>
+<ModalActionComponent isOpen={isOpen}
+onOpenChange={onOpenChange}
+fetchData={fetchData}
+obj={objData}/>
+</>
 
   );
 }
@@ -135,15 +142,4 @@ const formatDateTime = (dateString) => {
   }
 };
 
-const formatDate = (dateString) => {
-  try {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('th-TH', {
-      dateStyle: 'medium',
-    }).format(date);
-  } catch (error) {
-    console.error("Failed to format date:", error);
-    return dateString;
-  }
-};
 

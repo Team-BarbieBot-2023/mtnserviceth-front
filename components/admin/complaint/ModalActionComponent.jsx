@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { parseDate, getLocalTimeZone } from "@internationalized/date";
 import React, { useState, useEffect} from 'react';
 
-export default function ModalActionComponent({ isOpen, onOpenChange,obj }) {
+export default function ModalActionComponent({ isOpen, onOpenChange,obj,fetchData}) {
     const { data: session } = useSession();
     const [valueDate, setValueDate] = React.useState(parseDate("2024-04-04"));
     const [formData, setFormData] = useState(null);
@@ -21,28 +21,22 @@ export default function ModalActionComponent({ isOpen, onOpenChange,obj }) {
         formData.complaint_result = e.target.value
     };
 
-    const handleSave = async () => {
+    const handleSave = async (onClose) => {
         formData.scheduled_datetime = valueDate;
-        if (!formData.phone || !formData.job_title || !formData.job_description || !formData.scheduled_datetime || !formData.urgency) {
+        if (!formData.resolution || !formData.complaint_result) {
             alert('Please fill in all required fields.');
-            return;
         }
 
-        const data = new FormData();
-        data.append('complaint_title', formData.complaint_title);
-        data.append('complaint_description', formData.complaint_description);
-        data.append('resolution', formData.resolution);
-        data.append('complaint_result', formData.complaint_result);
-        data.append('complaint_id', formData.complaint_id);
-        data.append('job_id', formData.job_id);
-        data.append('technician_id', formData.technician_id);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/complaints/updatecase`, {
                 method: 'POST',
-                body: data,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
+                alert('submit success');
+                fetchData();
                 onClose();
             } else {
                 alert('Failed to submit the form.');
@@ -56,7 +50,6 @@ export default function ModalActionComponent({ isOpen, onOpenChange,obj }) {
     useEffect(() => {
         if (obj) {
             setFormData(obj);
-            console.log(formData);
         }
       }, [obj]);
     if (!session) {
@@ -66,7 +59,6 @@ export default function ModalActionComponent({ isOpen, onOpenChange,obj }) {
 
     return (
         <>    
-               {formData ? (
         <Modal
         className="max-w-xl"
         isOpen={isOpen}
@@ -74,63 +66,59 @@ export default function ModalActionComponent({ isOpen, onOpenChange,obj }) {
         isDismissable={false}
         isKeyboardDismissDisabled={true}
         >
-                        <ModalHeader className="flex flex-col gap-1">
-                <h1>{formData.complaint_title}</h1> : resolution</ModalHeader>
-                <ModalContent className='p-5'>
-            {(onClose) => (
-            <>
-                       <div>
-                       <h1 className='my-2'>Complaint Title : {formData.complaint_title}</h1>
-                        <form className="grid gap-2 my-4">
-                        <Textarea
-                        value={formData.resolution}
-                        onChange={handleInputChange}
-                        isRequired
-                        name="resolution"
-                        label="Description"
-                        placeholder="Enter your description"
-                        className="w-full"
-                        />
-                            <Select
-                                isRequired
-                                label="result"
-                                placeholder="Select result"
-                                onChange={handleSelectionChange}
-                                defaultSelectedKeys={[formData.complaint_result]}
-                            >
-                                <SelectItem key="no_action" value="no_action">
-                                    ยังไม่ได้ดำเนินการ
-                                </SelectItem>
-                                <SelectItem key="warn" value="warn">
-                                    ตักเตือน
-                                </SelectItem>
-                                <SelectItem key="ban" value="ban">
-                                    แบนช่าง
-                                </SelectItem>
-                                <SelectItem key="replace" value="replace">
-                                เปลี่ยนช่าง
-                                </SelectItem>
-                                <SelectItem key="refund" value="refund">
-                                    คืนเงินลูกค้า
-                                </SelectItem>
-                            </Select>
-                        </form>
-                </div>   
-                <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                </Button>
-                <Button color="primary" onPress={handleSave}>
-                    Save
-                </Button>
-            </ModalFooter>
-            </>
-          )}
-            </ModalContent>
-        </Modal>
-        ) : (
-          <Text>Loading...</Text>
-        )}                    
+        <ModalContent className='p-5'>
+        {(onClose) => (
+        <>
+        {formData?(<div>
+            <h1 className='my-2'>Complaint Title : {formData.complaint_title}</h1>
+            <h2 className='my-2 bg-gray-100 text-green-500 p-2 rounded-lg'>{formData.complaint_description}</h2>
+            <form className="grid gap-2 my-4">
+                    <Textarea
+                    value={formData.resolution}
+                    onChange={handleInputChange}
+                    isRequired
+                    name="resolution"
+                    label="Description"
+                    placeholder="Enter your description"
+                    
+                    />
+                        <Select
+                            isRequired
+                            label="result"
+                            placeholder="Select result"
+                            onChange={handleSelectionChange}
+                            defaultSelectedKeys={[formData.complaint_result]}
+                        >
+                            <SelectItem key="no_action" value="no_action">
+                                ยังไม่ได้ดำเนินการ
+                            </SelectItem>
+                            <SelectItem key="warn" value="warn">
+                                ตักเตือน
+                            </SelectItem>
+                            <SelectItem key="baned" value="baned">
+                                แบนและเปลี่ยนช่าง
+                            </SelectItem>
+                            <SelectItem key="replace" value="replace">
+                            เปลี่ยนช่าง
+                            </SelectItem>
+                            <SelectItem key="refund" value="refund">
+                            คืนเงินลูกค้า
+                            </SelectItem>
+                        </Select>
+                    </form>    
+                    <ModalFooter>
+                        <Button color="danger" variant="light" onPress={onClose}>
+                            Close
+                        </Button>
+                        <Button color="primary" onPress={()=>{handleSave(onClose);}}>
+                            Save
+                        </Button>
+                    </ModalFooter>
+        </div>):(<div>Loading ...</div>)}
+        </>
+        )}
+        </ModalContent>
+        </Modal>                  
         </>
     );
 }

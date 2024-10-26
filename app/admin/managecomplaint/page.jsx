@@ -1,25 +1,22 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect, useCallback } from "react";
-import { faMoneyCheck,faRepeat,faUserSlash,faCircleExclamation,faPersonHarassing, faBriefcaseMedical, faCirclePlus, faTimeline } from "@fortawesome/free-solid-svg-icons";
-import { Button, Modal, ModalContent, ModalFooter, useDisclosure,Tabs, Tab, Chip,Card, CardBody } from "@nextui-org/react";
+import { faMoneyCheck,faRepeat,faUserSlash,faCircleExclamation,faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
+import { Tabs, Tab, Chip,Card, CardBody } from "@nextui-org/react";
 import TablesComplaintComponent from "@/components/admin/complaint/TablesComplaintComponent";
 export default function  Page() {
   const [data, setData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-    // ดึงข้อมูลจาก backend API
+  const fetchData = async () => {
+    console.log("กระทำการ fetch");
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/complaints/getcomplaintsbyadmin`);
       if(res.ok){
         const result = await res.json();
         setData(result);
-        console.log(result)
       }
 
-    };
+  };
+  useEffect(() => {
     fetchData();
-
-
   }, []);
     return (
         <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9">
@@ -53,11 +50,8 @@ export default function  Page() {
             </div>
           }
         >
-                        <Card>
-            <CardBody>
-            <div>
-              <TablesComplaintComponent data={data.filter(o=>o.complaint_result)}/>
-            </div>
+          <Card><CardBody>
+              <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='no_action')} fetchData={fetchData}/>
             </CardBody>
             </Card>
         </Tab>
@@ -67,13 +61,13 @@ export default function  Page() {
             <div className="flex items-center space-x-2">
                 <FontAwesomeIcon icon={faPersonHarassing} className="h-5 w-5" />
               <span>ตักเตือน</span>
-              <Chip size="sm" variant="faded">3</Chip>
+              <Chip size="sm" color="success" variant="shadow">{data.filter(o=>o.complaint_result=='warn').length}</Chip>
             </div>
           }
         >
             <Card>
             <CardBody>
-            <div>content</div>
+            <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='warn')} fetchData={fetchData}/>
             </CardBody>
             </Card>
         </Tab>
@@ -83,13 +77,13 @@ export default function  Page() {
             <div className="flex items-center space-x-2">
                 <FontAwesomeIcon icon={faRepeat} className="h-5 w-5" />
               <span>เปลี่ยนช่าง</span>
-              <Chip size="sm" variant="faded">3</Chip>
+              <Chip size="sm" color="success" variant="shadow">{data.filter(o=>o.complaint_result=='replace').length}</Chip>
             </div>
           }
         >
             <Card>
             <CardBody>
-            <div>content</div>
+            <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='replace')} fetchData={fetchData}/>
             </CardBody>
             </Card>
         </Tab> 
@@ -99,29 +93,29 @@ export default function  Page() {
             <div className="flex items-center space-x-2">
                 <FontAwesomeIcon icon={faMoneyCheck} className="h-5 w-5" />
               <span>คืนเงินลูกค้า</span>
-              <Chip size="sm" variant="faded">3</Chip>
+              <Chip size="sm" color="success" variant="shadow">{data.filter(o=>o.complaint_result=='refund').length}</Chip>
             </div>
           }
         >
             <Card>
             <CardBody>
-            <div>content</div>
+            <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='refund')} fetchData={fetchData}/>
             </CardBody>
             </Card>
         </Tab>  
         <Tab
-          key="ban"
+          key="baned"
           title={
             <div className="flex items-center space-x-2">
                 <FontAwesomeIcon icon={faUserSlash} className="h-5 w-5" />
               <span>แบนช่าง</span>
-              <Chip size="sm" variant="faded">3</Chip>
+              <Chip size="sm" color="success" variant="shadow">{data.filter(o=>o.complaint_result=='baned').length}</Chip>
             </div>
           }
         >
             <Card>
             <CardBody>
-            <div>content</div>
+            <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='baned')} fetchData={fetchData}/>
             </CardBody>
             </Card>
         </Tab>                   

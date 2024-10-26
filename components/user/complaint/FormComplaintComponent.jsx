@@ -82,7 +82,6 @@ export default function FormComplaintComponent({ data }) {
               });
               if (result.ok) {
                 alert('ส่งเรื่องร้องเรียนเข้าระบบเรียบร้อยแล้ว กรุณารอการตรวจสอบ');
-                console.log(result.ok)
                 router.push('/jobs');
               }
         } catch (error) {
