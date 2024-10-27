@@ -56,8 +56,7 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({status:status}),
+          }
         });
         if (response.ok) {
          fetchData();
