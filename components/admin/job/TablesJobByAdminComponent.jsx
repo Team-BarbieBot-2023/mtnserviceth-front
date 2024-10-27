@@ -121,13 +121,13 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                          {!item.technician_id && (
+                          {!item.technician_id && item.status !=='canceled' && (
                             <DropdownItem onPress={()=>{ onActionCancel(item.job_id,item.job_title)}}>
                               ยกเลิกงาน
                               </DropdownItem>
                             )}
 
-                            {item.technician_id>0 &&  (
+                            {item.technician_id>0 && item.status !=='completed' &&  (
                             <DropdownItem onPress={()=>{ onActionReplace(item.job_id,item.technician_name)}}>
                               ถอดช่างออกจากงาน
                               </DropdownItem>
