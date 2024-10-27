@@ -42,8 +42,6 @@ export default function Editprofile({ data }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
     try {
       const form = new FormData();
       form.append("phone", formData.phone);

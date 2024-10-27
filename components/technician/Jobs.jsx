@@ -43,7 +43,6 @@ const formatDate = (dateString) => {
 
 export default function Jobs({ data }) {
 
-  console.log(data)
   const { data: session, status, update } = useSession();
 
   const [page, setPage] = React.useState(1);
