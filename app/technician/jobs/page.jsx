@@ -26,6 +26,6 @@ export default async function Page() {
   }
 
   return (
-    <Jobs data={data} />
+    <Jobs data={data.filter((o) => o.status !== "canceled")} />
   );
 }
