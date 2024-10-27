@@ -39,8 +39,8 @@ export default function Tables({ data }) {
       }}
     >
       <TableHeader>
-        <TableColumn className="text-center" key="job_title">TITLE</TableColumn>
-        <TableColumn className="text-center" key="job_description">PROBLEM</TableColumn>
+        <TableColumn key="job_title">TITLE</TableColumn>
+        <TableColumn key="job_description">PROBLEM</TableColumn>
         <TableColumn className="text-center" key="job_type">TYPE</TableColumn>
         <TableColumn className="text-center" key="urgency">URGENCY</TableColumn>
         <TableColumn className="text-center" key="scheduled_datetime">SCHEDULED</TableColumn>
@@ -97,8 +97,7 @@ export default function Tables({ data }) {
                   ) : (<p></p>)}
                 </div>;
               }
-              const cellAlignment =
-                columnKey === "customer_details" ? "text-left" : "text-center";
+              const cellAlignment = columnKey === "customer_details" || columnKey === "job_title" || columnKey === "job_description" ? "text-left" : "text-center";
 
               return <TableCell className={cellAlignment}>{value}</TableCell>;
             }}

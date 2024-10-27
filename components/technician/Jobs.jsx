@@ -67,8 +67,6 @@ export default function Jobs({ data }) {
         body: JSON.stringify(data),
       })
 
-      console.log(response.ok);
-
       if (!response.ok) {
         throw new Error(`Failed to fetch technician data: ${response.statusText}`);
       }
@@ -84,7 +82,6 @@ export default function Jobs({ data }) {
   if (!session) {
     return null;
   }
-
 
   return (
     <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9">
@@ -108,14 +105,13 @@ export default function Jobs({ data }) {
               }}
             >
               <TableHeader>
-                <TableColumn className="text-center" key="job_title">TITLE</TableColumn>
-                <TableColumn className="text-center" key="job_description">PROBLEM</TableColumn>
+                <TableColumn key="job_title">TITLE</TableColumn>
+                <TableColumn key="job_description">PROBLEM</TableColumn>
                 <TableColumn className="text-center" key="job_type">TYPE</TableColumn>
                 <TableColumn className="text-center" key="urgency">URGENCY</TableColumn>
                 <TableColumn className="text-center" key="scheduled_datetime">SCHEDULED</TableColumn>
                 <TableColumn className="text-center" key="phone">PHONE</TableColumn>
                 <TableColumn key="customer_details">CUSTOMER DETAILS</TableColumn>
-                <TableColumn className="text-center" key="created_at">CREATED AT</TableColumn>
                 <TableColumn className="text-center" key="button"></TableColumn>
               </TableHeader>
               <TableBody items={items} emptyContent={"No Data."}>
@@ -137,8 +133,7 @@ export default function Jobs({ data }) {
                         value = formatDate(value);
                       }
 
-                      const cellAlignment =
-                        columnKey === "customer_details" ? "text-left" : "text-center";
+                      const cellAlignment = columnKey === "customer_details" || columnKey === "job_title" || columnKey === "job_description"  ? "text-left" : "text-center";
 
                       return (
                         <TableCell className={cellAlignment} key={columnKey}>

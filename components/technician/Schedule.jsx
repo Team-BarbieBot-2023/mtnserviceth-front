@@ -65,13 +65,14 @@ export default function Schedule({ initialData, userId }) {
         }
     };
 
-    const handleStatusUpdate = async (id) => {
+    const handleStatusUpdate = async (item) => {
         setIsUpdating(true);
+        item.status = 'completed'
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/updatestatusjobscompleted/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/updatestatusjobscompleted/${item.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: 'completed' }),
+                body: JSON.stringify(item),
             });
 
             if (response.ok) {
@@ -159,7 +160,7 @@ export default function Schedule({ initialData, userId }) {
 
                                     <div className="mt-4 text-right">
                                         {data.status === "in_progress" && <Button color="primary" auto onPress={() => openModal(data)}>Mark as Completed</Button>}
-                                        
+
                                     </div>
                                 </div>
 
@@ -172,7 +173,7 @@ export default function Schedule({ initialData, userId }) {
                                             Are you sure you want to mark this job as completed?
                                         </ModalBody>
                                         <ModalFooter>
-                                            <Button color="primary" onPress={() => handleStatusUpdate(selectedJob?.id)} disabled={isUpdating}>
+                                            <Button color="primary" onPress={() => handleStatusUpdate(selectedJob)} disabled={isUpdating}>
                                                 {isUpdating ? 'Updating...' : 'Confirm'}
                                             </Button>
                                             <Button color="danger" variant="light" onPress={closeModal}>
