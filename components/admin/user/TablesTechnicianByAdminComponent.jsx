@@ -32,6 +32,21 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
     return <div>No data available</div>;
   }
 
+  const onAction=async (id,status)=>{
+    let result = confirm(`คุณต้องการ [${status}] หรือไม่?`);
+      if (result) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/technician/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({status:status}),
+        });
+        if (response.ok) {
+         fetchData();
+        }    
+      }
+  }
   return (
     <>
         <Table
@@ -86,8 +101,8 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            <DropdownItem onPress={()=>{alert("ข้อความที่ต้องการแจ้งเตือน");}} >Active</DropdownItem>
-                            <DropdownItem onPress={()=>{ alert("ข้อความที่ต้องการแจ้งเตือน");}}>Banned</DropdownItem>
+                            <DropdownItem onPress={()=>{onAction(item.technician_id,'active');}} >Active</DropdownItem>
+                            <DropdownItem onPress={()=>{onAction(item.technician_id,'banned');}}>Banned</DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>
