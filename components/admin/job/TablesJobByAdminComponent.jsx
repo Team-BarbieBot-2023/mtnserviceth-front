@@ -10,7 +10,6 @@ import {
   DropdownItem,
   Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination
 } from "@nextui-org/react";
-import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
 export default function TablesJobByAdminComponent({ data, fetchData }) {
   const [page, setPage] = useState(1);
   const rowsPerPage = 13;
