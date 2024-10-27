@@ -3,13 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faPersonHarassing } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import {
-  useDisclosure,
-  User,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination
+  useDisclosure, User, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination
 } from "@nextui-org/react";
 import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
 import { useRouter } from "next/navigation";

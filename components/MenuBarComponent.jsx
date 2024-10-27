@@ -1,6 +1,6 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUserGroup , faPersonDigging, faFileAlt, faTasks, faStar, faUserEdit, faClipboardCheck, faSignOutAlt, faHome, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUserGroup, faPersonDigging, faFileAlt, faTasks, faStar, faUserEdit, faClipboardCheck, faSignOutAlt, faHome, faBriefcase, faDashboard, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { signOut, useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,10 +13,10 @@ const getData = async (id) => {
             method: "GET",
         });
         let result = [];
-         if (response.ok) {
+        if (response.ok) {
             result = await response.json();
             // throw new Error(`Failed to fetch review data: ${response.statusText}`);
-         }
+        }
 
         return result;
     } catch (error) {
@@ -42,9 +42,9 @@ export default function MenuBarComponent() {
                 setDataReview(reviewData.filter(o => o.rating == null) || []);
                 setLoading(false);
             };
-            if(session.user.role=='U'){
-                fetchReviewData();                
-            }else{
+            if (session.user.role == 'U') {
+                fetchReviewData();
+            } else {
                 setLoading(false);
             }
         }
@@ -162,22 +162,32 @@ export default function MenuBarComponent() {
                                     <FontAwesomeIcon icon={faHome} className="w-5 h-5" />
                                     <span className='ml-3'>Home</span>
                                 </a>
-                                
+
                                 <a onClick={() => router.push('/admin/managecomplaint')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
                                     <FontAwesomeIcon icon={faBriefcase} className="w-5 h-5" />
                                     <span className='ml-3'>Manage Complaints</span>
                                 </a>
                                 <a onClick={() => router.push('/admin/jobsall')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
                                     <FontAwesomeIcon icon={faPersonDigging} className="w-5 h-5" />
                                     <span className='ml-3'>Jobs All</span>
                                 </a>
                                 <a onClick={() => router.push('/admin/usersall')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
                                     <FontAwesomeIcon icon={faUserGroup} className="w-5 h-5" />
                                     <span className='ml-3'>Users All</span>
-                                </a>                                                                
+                                </a>
+                                <a onClick={() => router.push('/admin/dashboard')}
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/dashboard')}`}>
+                                    <FontAwesomeIcon icon={faDashboard} className="w-5 h-5" />
+                                    <span className='ml-3'>Dashboard</span>
+                                </a>
+                                <a onClick={() => router.push('/admin/history')}
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/history')}`}>
+                                    <FontAwesomeIcon icon={faHistory} className="w-5 h-5" />
+                                    <span className='ml-3'>Mechanic's history</span>
+                                </a>
                             </>
                         )}
 

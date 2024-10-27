@@ -76,8 +76,7 @@ export default function Schedule({ initialData, userId }) {
             });
 
             if (response.ok) {
-                console.log('Status updated successfully');
-                await fetchData(); // Re-fetch the updated data
+                await fetchData();
             } else {
                 console.error('Failed to update status');
             }

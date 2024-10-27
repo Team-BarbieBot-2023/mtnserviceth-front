@@ -87,7 +87,6 @@ export default function Add({ onClose }) {
     };
 
     const handleSave = async () => {
-        console.log(formData)
         formData.scheduled_datetime = valueDate;
         if (!formData.phone || !formData.job_title || !formData.job_description || !formData.scheduled_datetime || !formData.urgency) {
             alert('Please fill in all required fields.');

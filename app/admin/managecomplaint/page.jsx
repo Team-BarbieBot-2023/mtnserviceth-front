@@ -7,7 +7,6 @@ import TablesComplaintComponent from "@/components/admin/complaint/TablesComplai
 export default function  Page() {
   const [data, setData] = useState([]);
   const fetchData = async () => {
-    console.log("กระทำการ fetch");
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/complaints/getcomplaintsbyadmin`);
       if(res.ok){
         const result = await res.json();

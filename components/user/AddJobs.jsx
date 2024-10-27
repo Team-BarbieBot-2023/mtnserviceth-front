@@ -42,39 +42,21 @@ export default function AddJobs({ initialData, userId }) {
             <div className="bg-white h-full w-full rounded-2xl p-10 shadow-md">
                 <div className="text-3xl font-semibold border-b border-gray-300 pb-4 mb-6 flex">
                     <div className="w-full m-auto">
-                        <span>
-                            <FontAwesomeIcon icon={faBriefcaseMedical} className="h-10 w-10" /> Submit Job
-                        </span>
+                        <span><FontAwesomeIcon icon={faBriefcaseMedical} className="h-10 w-10" /> Submit Job</span>
                     </div>
                     <div className="w-full text-end gap-2 flex justify-end">
-                        <Button
-                            startContent={<FontAwesomeIcon icon={faTimeline} className="h-5 w-5 mx-[10px]" />}
-                            onPress={handleCompaintHistories}
-                            color="default"
-                            auto
-                        >
-                            My Complaints
+                        <Button startContent={<FontAwesomeIcon icon={faTimeline} className="h-5 w-5 mx-[10px]" />}
+                            onPress={handleCompaintHistories} color="default" auto>My Complaints
                         </Button>
-                        <Button
-                            startContent={<FontAwesomeIcon icon={faCirclePlus} className="h-5 w-5" />}
-                            onPress={handleAddJob}
-                            color="primary"
-                            auto
-                        >
-                            Add Job
+                        <Button startContent={<FontAwesomeIcon icon={faCirclePlus} className="h-5 w-5" />}
+                            onPress={handleAddJob} color="primary" auto>Add Job
                         </Button>
                     </div>
                 </div>
                 <div className="flex gap-12">
                     <div className="bg-gray-50 p-10 rounded-xl shadow-md w-full">
                         <Table userId={userId} model={data} />
-                        <Modal
-                            className="max-w-4xl"
-                            isOpen={isOpen}
-                            onOpenChange={onOpenChange}
-                            isDismissable={false}
-                            isKeyboardDismissDisabled={true}
-                        >
+                        <Modal className="max-w-4xl" isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                             <ModalContent>
                                 {(onClose) => {
                                     return modalby === 'J' ? (
