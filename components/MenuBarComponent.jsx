@@ -4,7 +4,7 @@ import { faBars, faUserGroup , faPersonDigging, faFileAlt, faTasks, faStar, faUs
 import { signOut, useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { faUpwork } from '@fortawesome/free-brands-svg-icons';
+import { faLine, faUpwork } from '@fortawesome/free-brands-svg-icons';
 import { Tooltip } from '@nextui-org/react';
 
 const getData = async (id) => {
@@ -143,15 +143,15 @@ export default function MenuBarComponent() {
                                     <FontAwesomeIcon icon={faTasks} className="w-5 h-5" />
                                     <span className='ml-3'>Manage Schedule</span>
                                 </a>
-                                <a onClick={() => router.push('/technician/reports')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/reports')}`}>
-                                    <FontAwesomeIcon icon={faFileAlt} className="w-5 h-5" />
-                                    <span className='ml-3'>Reports</span>
-                                </a>
                                 <a onClick={() => router.push('/technician/edit-profile')}
                                     className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/edit-profile')}`}>
                                     <FontAwesomeIcon icon={faUserEdit} className="w-5 h-5" />
                                     <span className='ml-3'>Profile</span>
+                                </a>
+                                <a onClick={() => router.push('/technician/notification')}
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/technician/notification')}`}>
+                                    <FontAwesomeIcon icon={faLine} className="w-5 h-5" />
+                                    <span className='ml-3'>Line notification</span>
                                 </a>
                             </>
                         )}

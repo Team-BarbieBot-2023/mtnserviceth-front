@@ -43,6 +43,7 @@ const formatDate = (dateString) => {
 
 export default function Jobs({ data }) {
 
+  console.log(data)
   const { data: session, status, update } = useSession();
 
   const [page, setPage] = React.useState(1);
@@ -56,19 +57,22 @@ export default function Jobs({ data }) {
     return data.slice(start, end);
   }, [page, data]);
 
-  const handleJobAction = async (jobId) => {
-    const data = { user_id: session.user._id, technician_id: 0, status: "in_progress", }
+  const handleJobAction = async (item) => {
+    const data = { user_id: session.user._id, technician_id: 0, status: "in_progress", to: item.user_id }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/updatestatusjobsinprogress/${jobId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/updatestatusjobsinprogress/${item.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
 
+      console.log(response.ok);
+
       if (!response.ok) {
         throw new Error(`Failed to fetch technician data: ${response.statusText}`);
       }
+
       window.location = `${process.env.NEXT_PUBLIC_BASE_URL}/technician/schedule`
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -126,7 +130,7 @@ export default function Jobs({ data }) {
                       } else if (["created_at", "updated_at"].includes(columnKey)) {
                         value = formatDateTime(value);
                       } else if (columnKey === "button") {
-                        value = <Button size="sm" onClick={() => handleJobAction(item.id)}>Take this Job</Button>;
+                        value = <Button size="sm" onClick={() => handleJobAction(item)}>Take this Job</Button>;
                       }
 
                       if (columnKey === "scheduled_datetime") {

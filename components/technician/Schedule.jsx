@@ -32,7 +32,7 @@ const status = (item) => {
 };
 
 export default function Schedule({ initialData, userId }) {
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useState(initialData || []);
     const [visible, setVisible] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
