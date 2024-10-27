@@ -32,7 +32,9 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
     return <div>No data available</div>;
   }
 
-  const onAction=async (id,status)=>{
+  const onAction=async (id,status,obj)=>{
+    let sendObj = obj;
+    sendObj.status = status;
     let result = confirm(`คุณต้องการ [${status}] หรือไม่?`);
       if (result) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/technician/${id}`, {
@@ -40,7 +42,7 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({status:status}),
+          body: JSON.stringify(sendObj),
         });
         if (response.ok) {
          fetchData();
@@ -101,8 +103,8 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            <DropdownItem onPress={()=>{onAction(item.technician_id,'active');}} >Active</DropdownItem>
-                            <DropdownItem onPress={()=>{onAction(item.technician_id,'banned');}}>Banned</DropdownItem>
+                            <DropdownItem onPress={()=>{onAction(item.technician_id,'active',item);}} >Active</DropdownItem>
+                            <DropdownItem onPress={()=>{onAction(item.technician_id,'banned',item);}}>Banned</DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>
