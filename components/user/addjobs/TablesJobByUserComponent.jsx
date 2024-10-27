@@ -1,6 +1,6 @@
 "use client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPersonHarassing } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import {
   useDisclosure,
@@ -12,8 +12,9 @@ import {
   Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination
 } from "@nextui-org/react";
 import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
-export default function TablesJobByAdminComponent({ data, fetchData }) {
-  console.log(data)
+import { useRouter } from "next/navigation";
+export default function TablesJobByUserComponent({ data, fetchData }) {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [objData, setObjData] = useState(null)
   const [page, setPage] = useState(1);
@@ -53,6 +54,7 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
           <TableColumn className="text-left" key="job_description">JOB DESCRIPTION</TableColumn>
           <TableColumn className="text-left" key="urgency">JOB URGENCY</TableColumn>
           <TableColumn className="text-left" key="technician">TECHNICIAN</TableColumn>
+          <TableColumn className="text-left" key="technician_level">Lv.</TableColumn>
           <TableColumn className="text-center" key="button"></TableColumn>
         </TableHeader>
         <TableBody emptyContent={"No users found"} items={data}>
@@ -78,26 +80,17 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
                     >
                     </User>
                 }
+                if (columnKey === "technician_level") {
+                  value = item.technician_level ? String(item.technician_level) + "/5" : ""
+                }
                 if (columnKey === "button") {
                   value = <div className='flex'>
-                    {item.technician_id > 0 ?
-                      (
-                        <div className="relative flex justify-end items-center gap-2">
-                          <Dropdown className="bg-background border-1 border-default-200">
-                            <DropdownTrigger>
-                              <Button isIconOnly radius="full" size="sm" variant="light">
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                              </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                              <DropdownItem onPress={() => { alert("ข้อความที่ต้องการแจ้งเตือน"); }} >ยกเลิกงาน</DropdownItem>
-                              <DropdownItem onPress={() => { alert("ข้อความที่ต้องการแจ้งเตือน"); }}>ถอดช่างออกจากงาน</DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </div>
-                      ) : (<p></p>)
-                    }
-
+                    {item.status !== 'pending' ? (
+                      <Button onClick={() => router.push(`/complaints/${Number(item.job_id)}/create`)}
+                        className='px-[10px] py-[0]'
+                        color="warning"
+                        variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>Complaint</Button>
+                    ) : (<p></p>)}
                   </div>;
                 }
                 const cellAlignment = "text-left"

@@ -11,7 +11,7 @@ import MyCompaintsComponent from "@/components/user/complaint/MyCompaintsCompone
 export default function AddJobs({ initialData, userId }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [data, setData] = useState(initialData);
-    const [modalby,setModalBy] = useState('J');
+    const [modalby, setModalBy] = useState('J');
 
     const fetchData = useCallback(async () => {
         try {
@@ -24,18 +24,17 @@ export default function AddJobs({ initialData, userId }) {
         }
     }, [userId]);
 
-    // Close modal and refresh data
-    const handleAddJob=()=>{
+    const handleAddJob = () => {
         setModalBy('J');
         onOpen();
     }
-    const handleCompaintHistories=()=>{
+    const handleCompaintHistories = () => {
         setModalBy('C');
         onOpen();
     }
-    const handleClose = () => {
-        onOpenChange(false); // Close the modal
-        fetchData(); // Refresh the data
+    const handleClose = async () => {
+        onOpenChange(false);
+        await fetchData();
     };
 
     return (
@@ -48,14 +47,14 @@ export default function AddJobs({ initialData, userId }) {
                         </span>
                     </div>
                     <div className="w-full text-end gap-2 flex justify-end">
-                    <Button
+                        <Button
                             startContent={<FontAwesomeIcon icon={faTimeline} className="h-5 w-5 mx-[10px]" />}
                             onPress={handleCompaintHistories}
                             color="default"
                             auto
                         >
                             My Complaints
-                    </Button>
+                        </Button>
                         <Button
                             startContent={<FontAwesomeIcon icon={faCirclePlus} className="h-5 w-5" />}
                             onPress={handleAddJob}
@@ -66,9 +65,9 @@ export default function AddJobs({ initialData, userId }) {
                         </Button>
                     </div>
                 </div>
-                <div className="flex gap-12 justify-center">
-                    <div className="bg-gray-50 p-10 rounded-xl shadow-md text-center w-full">
-                        <Table data={data} />
+                <div className="flex gap-12">
+                    <div className="bg-gray-50 p-10 rounded-xl shadow-md w-full">
+                        <Table userId={userId} model={data} />
                         <Modal
                             className="max-w-4xl"
                             isOpen={isOpen}
@@ -77,11 +76,11 @@ export default function AddJobs({ initialData, userId }) {
                             isKeyboardDismissDisabled={true}
                         >
                             <ModalContent>
-                            {(onClose) => {
+                                {(onClose) => {
                                     return modalby === 'J' ? (
                                         <Add onClose={handleClose} />
                                     ) : (
-                                        <MyCompaintsComponent userId={userId}  onClose={handleClose} />
+                                        <MyCompaintsComponent userId={userId} onClose={handleClose} />
                                     );
                                 }}
                             </ModalContent>
