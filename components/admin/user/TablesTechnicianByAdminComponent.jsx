@@ -86,8 +86,8 @@ export default function TablesTechnicianByAdminComponent({ data,fetchData}) {
                             </Button>
                           </DropdownTrigger>
                           <DropdownMenu>
-                            <DropdownItem>Active</DropdownItem>
-                            <DropdownItem>Banned</DropdownItem>
+                            <DropdownItem onPress={()=>{alert("ข้อความที่ต้องการแจ้งเตือน");}} >Active</DropdownItem>
+                            <DropdownItem onPress={()=>{ alert("ข้อความที่ต้องการแจ้งเตือน");}}>Banned</DropdownItem>
                           </DropdownMenu>
                         </Dropdown>
                       </div>
