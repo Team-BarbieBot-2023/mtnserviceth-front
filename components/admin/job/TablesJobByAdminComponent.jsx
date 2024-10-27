@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from "react";
 import {
-  useDisclosure,
   User,
   DropdownTrigger,
   Dropdown,
@@ -13,9 +12,6 @@ import {
 } from "@nextui-org/react";
 import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
 export default function TablesJobByAdminComponent({ data, fetchData }) {
-  console.log(data)
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [objData, setObjData] = useState(null)
   const [page, setPage] = useState(1);
   const rowsPerPage = 13;
 
@@ -32,6 +28,43 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
   if (validData.length === 0) {
     return <div>No data available</div>;
   }
+
+  const onActionCancel=async (id,job_title )=>{
+    let result = confirm(`คุณต้องการยกเลิก  [${job_title}] หรือไม่?`);
+      if (result) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/canceljob/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({status:status}),
+        });
+        if (response.ok) {
+         fetchData();
+        }    
+      }
+  }
+
+  
+
+
+  
+  const onActionReplace=async (id,technician_name )=>{
+    let result = confirm(`คุณต้องการถอด  [${technician_name}] หรือไม่?`);
+      if (result) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/removetechnician/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({status:status}),
+        });
+        if (response.ok) {
+         fetchData();
+        }    
+      }
+  }
+
 
   return (
     <>
@@ -78,28 +111,33 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
                     >
                     </User>
                 }
-                if (columnKey === "button") {
-                  value = <div className='flex'>
-                    {item.technician_id > 0 ?
-                      (
-                        <div className="relative flex justify-end items-center gap-2">
-                          <Dropdown className="bg-background border-1 border-default-200">
-                            <DropdownTrigger>
-                              <Button isIconOnly radius="full" size="sm" variant="light">
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                              </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                              <DropdownItem onPress={() => { alert("ข้อความที่ต้องการแจ้งเตือน"); }} >ยกเลิกงาน</DropdownItem>
-                              <DropdownItem onPress={() => { alert("ข้อความที่ต้องการแจ้งเตือน"); }}>ถอดช่างออกจากงาน</DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </div>
-                      ) : (<p></p>)
-                    }
+              if (columnKey === "button") {
+                value = <div className='flex'>
+                       <div className="relative flex justify-end items-center gap-2">
+                        <Dropdown className="bg-background border-1 border-default-200">
+                          <DropdownTrigger>
+                            <Button isIconOnly radius="full" size="sm" variant="light">
+                              <FontAwesomeIcon icon={faEllipsisVertical}/>
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu>
+                          {!item.technician_id && (
+                            <DropdownItem onPress={()=>{ onActionCancel(item.job_id,item.job_title)}}>
+                              ยกเลิกงาน
+                              </DropdownItem>
+                            )}
 
-                  </div>;
-                }
+                            {item.technician_id>0 &&  (
+                            <DropdownItem onPress={()=>{ onActionReplace(item.job_id,item.technician_name)}}>
+                              ถอดช่างออกจากงาน
+                              </DropdownItem>
+                            )}
+                          </DropdownMenu>
+                        </Dropdown>
+                      </div>
+                </div>;
+              }  
+
                 const cellAlignment = "text-left"
                 return <TableCell className={cellAlignment}>{value}</TableCell>;
               }}
@@ -107,11 +145,6 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
           )}
         </TableBody>
       </Table>
-
-      <ModalActionComponent isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        fetchData={fetchData}
-        obj={objData} />
     </>
 
   );
