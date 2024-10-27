@@ -1,32 +1,19 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect, useCallback } from "react";
-import { faPersonCircleCheck,faPersonDigging,faMoneyCheck,faRepeat,faUserSlash,faCircleExclamation,faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
+import { faBuildingUser, faUserPlus, faUserXmark,faUserCheck,faUserClock, faPersonCircleCheck,faPersonDigging,faMoneyCheck,faRepeat,faUserSlash,faCircleExclamation,faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
 import { Tabs, Tab, Chip,Card, CardBody } from "@nextui-org/react";
 import TablesComplaintComponent from "@/components/admin/complaint/TablesComplaintComponent";
+import TablesJobByAdminComponent from "@/components/admin/job/TablesJobByAdminComponent";
 export default function  Page() {
-  const [dataUser, setDataUser] = useState([]);
-  const [dataTechnician, setDataTechnician] = useState([]);
-
-  const fetchUsersData = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/getusersbyadmin`);
-      if(res.ok){
-        const result = await res.json();
-        setDataUser(result);
-      }
-
-  };
-  const fetchTechniciansData = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/gettechniciansbyadmin`);
-    if(res.ok){
-      const result = await res.json();
-      setDataTechnician(result);
-    }
-
-};
+  const [data, setData] = useState([]);
 const fetchData = async ()=>{
-    await fetchUsersData();
-    await fetchTechniciansData();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/jobs/jobsbyadmin`);
+  if(res.ok){
+    const result = await res.json();
+    setData(result);
+    //'completed','canceled','pending','in_progress'
+  }
 }
   useEffect(() => {
     fetchData();
@@ -37,7 +24,7 @@ const fetchData = async ()=>{
                 <div className="text-3xl font-semibold border-b border-gray-300 pb-4 mb-6 flex">
                     <div className="w-full m-auto">
                         <span>
-                            <FontAwesomeIcon icon={faPersonDigging} className="h-10 w-10" /> Techniciants All
+                            <FontAwesomeIcon icon={faBuildingUser} className="h-10 w-10" /> Jobs All
                         </span>
                     </div>  
                 </div>
@@ -54,37 +41,65 @@ const fetchData = async ()=>{
         }}
       >
         <Tab
-          key="users"
+          key="pending"
           title={
             <div className="flex items-center space-x-2">
-              <FontAwesomeIcon icon={faPersonCircleCheck} className="h-5 w-5" />
-              <span>Users</span>
-              <Chip size="sm" color="warning" variant="shadow">{dataUser.length}</Chip>
+              <FontAwesomeIcon icon={faUserPlus} className="h-5 w-5" />
+              <span>pending</span>
+              <Chip size="sm" color="warning" variant="shadow">{data.filter(o=>o.status=='pending').length}</Chip>
             </div>
           }
         >
           <Card><CardBody>
-              <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='no_action')} fetchData={fetchData}/>
+          <TablesJobByAdminComponent data={data.filter(o=>o.status=='pending')} fetchData={fetchData}/>
             </CardBody>
             </Card>
-        </Tab>
+        </Tab>            
         <Tab
-          key="gettechnician"
+          key="in_progress"
           title={
             <div className="flex items-center space-x-2">
-                <FontAwesomeIcon icon={faPersonDigging} className="h-5 w-5" />
-              <span>Technicians</span>
-              <Chip size="sm" color="success" variant="shadow">{data.filter(o=>o.complaint_result=='warn').length}</Chip>
+              <FontAwesomeIcon icon={faUserClock} className="h-5 w-5" />
+              <span>in progress</span>
+              <Chip size="sm" color="primary" variant="shadow">{data.filter(o=>o.status=='in_progress').length}</Chip>
             </div>
           }
         >
-            <Card>
-            <CardBody>
-            <TablesComplaintComponent data={data.filter(o=>o.complaint_result=='warn')} fetchData={fetchData}/>
+          <Card><CardBody>
+          <TablesJobByAdminComponent data={data.filter(o=>o.status=='in_progress')} fetchData={fetchData}/>
             </CardBody>
             </Card>
-        </Tab>
-            
+        </Tab>  
+        <Tab
+          key="completed"
+          title={
+            <div className="flex items-center space-x-2">
+              <FontAwesomeIcon icon={faUserCheck} className="h-5 w-5" />
+              <span>completed</span>
+              <Chip size="sm" color="primary" variant="shadow">{data.filter(o=>o.status=='completed').length}</Chip>
+            </div>
+          }
+        >
+          <Card><CardBody>
+          <TablesJobByAdminComponent data={data.filter(o=>o.status=='completed')} fetchData={fetchData}/>
+            </CardBody>
+            </Card>
+        </Tab>   
+        <Tab
+          key="canceled"
+          title={
+            <div className="flex items-center space-x-2">
+              <FontAwesomeIcon icon={faUserXmark} className="h-5 w-5" />
+              <span>canceled</span>
+              <Chip size="sm" color="primary" variant="shadow">{data.filter(o=>o.status=='canceled').length}</Chip>
+            </div>
+          }
+        >
+          <Card><CardBody>
+          <TablesJobByAdminComponent data={data.filter(o=>o.status=='canceled')} fetchData={fetchData}/>
+            </CardBody>
+            </Card>
+        </Tab>                     
       </Tabs>
                 </div>
             </div>
