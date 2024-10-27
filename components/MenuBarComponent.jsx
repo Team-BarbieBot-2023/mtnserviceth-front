@@ -164,17 +164,17 @@ export default function MenuBarComponent() {
                                 </a>
 
                                 <a onClick={() => router.push('/admin/managecomplaint')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/managecomplaint')}`}>
                                     <FontAwesomeIcon icon={faBriefcase} className="w-5 h-5" />
                                     <span className='ml-3'>Manage Complaints</span>
                                 </a>
                                 <a onClick={() => router.push('/admin/jobsall')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobsall')}`}>
                                     <FontAwesomeIcon icon={faPersonDigging} className="w-5 h-5" />
                                     <span className='ml-3'>Jobs All</span>
                                 </a>
                                 <a onClick={() => router.push('/admin/usersall')}
-                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/jobs')}`}>
+                                    className={`flex items-center text-sm font-medium text-gray-700 py-2 px-2 hover:bg-gradient-to-tr from-blue-800 to-purple-700 hover:text-white rounded-md transition duration-150 ease-in-out cursor-pointer ${isActive('/admin/usersall')}`}>
                                     <FontAwesomeIcon icon={faUserGroup} className="w-5 h-5" />
                                     <span className='ml-3'>Users All</span>
                                 </a>
