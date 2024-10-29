@@ -32,7 +32,7 @@ export default function MenuBarComponent() {
     const router = useRouter();
     const pathname = usePathname();
 
-    const excludedPaths = ["/login", "/role", "/technician/register", "/impervious"];
+    const excludedPaths = ["/login", "/role", "/technician/register", "/notallowed"];
 
     useEffect(() => {
         if (session) {

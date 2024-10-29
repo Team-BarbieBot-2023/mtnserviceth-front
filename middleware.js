@@ -33,17 +33,17 @@ export async function middleware(req) {
   // ตรวจสอบ status ของผู้ใช้
   const userStatus = token.status;
 
-  // ถ้า status ไม่ใช่ 'A' ให้ redirect ไปหน้า impervious
-  if (userStatus !== 'A') {
-    return NextResponse.redirect(new URL('/impervious', req.url));
-  }
-
   // ดึง role ของผู้ใช้จาก token
   const userRole = token.role;
 
   // ถ้า role ไม่มีในระบบ ให้ redirect ไปหน้าเลือก role
   if (!userRole && req.nextUrl.pathname !== '/role') {
     return NextResponse.redirect(new URL('/role', req.url));
+  }
+
+  // ถ้า status ไม่ใช่ 'banned' ให้ redirect ไปหน้า impervious
+  if (userStatus === 'banned') {
+    return NextResponse.redirect(new URL('/notallowed', req.url));
   }
 
   // ถ้า role เป็น user แต่พยายามเข้าถึงหน้าที่ถูกจำกัดสิทธิ์

@@ -10,6 +10,7 @@ export const authOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
+
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/login`, {
                     method: 'POST',
@@ -25,6 +26,9 @@ export const authOptions = {
                         status: "A",
                     }),
                 });
+
+                console.log(response);
+
 
                 if (response.ok) {
                     return true; // ถ้าการสร้างผู้ใช้สำเร็จ

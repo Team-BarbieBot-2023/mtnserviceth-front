@@ -22,6 +22,7 @@ export default function DashboardComponent({ data }) {
 
     const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042'];
 
+    
     return (
         <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9 min-h-screen">
             <div className="bg-white h-full w-full rounded-2xl p-10 shadow-md">
