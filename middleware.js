@@ -34,7 +34,7 @@ export async function middleware(req) {
   const userStatus = token.status;
 
   // ถ้า status ไม่ใช่ 'A' ให้ redirect ไปหน้า impervious
-  if (userStatus !== 'A') {
+  if (userStatus === 'A') {
     return NextResponse.redirect(new URL('/impervious', req.url));
   }
 
