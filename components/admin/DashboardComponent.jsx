@@ -22,7 +22,7 @@ export default function DashboardComponent({ data }) {
 
     const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042'];
 
-    
+
     return (
         <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9 min-h-screen">
             <div className="bg-white h-full w-full rounded-2xl p-10 shadow-md">
@@ -58,9 +58,9 @@ export default function DashboardComponent({ data }) {
                     <div className="bg-white p-6 rounded-lg shadow-md">
                         <h3 className="text-xl font-semibold text-gray-700 text-center mb-4">Job Status</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={jobStatusData} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                            <BarChart data={jobStatusData} layout="vertical" margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                                 <XAxis type="number" />
-                                <YAxis dataKey="name" type="category" />
+                                <YAxis dataKey="name" type="category" width={100} />
                                 <Tooltip />
                                 <Legend />
                                 <Bar dataKey="value" fill="#82ca9d" />

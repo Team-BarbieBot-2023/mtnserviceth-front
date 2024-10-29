@@ -31,6 +31,19 @@ export default function ListReviewComponent({ data, id }) {
         await fetchData();
     };
 
+    const formatDateTime = (dateString) => {
+        try {
+          const date = new Date(dateString);
+          return new Intl.DateTimeFormat('th-TH', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          }).format(date);
+        } catch (error) {
+          console.error("Failed to format date:", error);
+          return dateString;
+        }
+      };
+
     return (
         <div className="flex-1 bg-gradient-to-tr from-blue-800 to-purple-700 p-9">
             <div className="bg-white h-full w-full rounded-2xl p-10 shadow-md">
@@ -63,7 +76,7 @@ export default function ListReviewComponent({ data, id }) {
                                 <p><strong>Job Title:</strong> {review.job_title}</p>
                                 <p><strong>Job Type:</strong> {review.job_type}</p>
                                 <p><strong>Problem Description:</strong> {review.job_description}</p>
-                                <p><strong>Created At:</strong> {review.created_at}</p>
+                                <p><strong>Created At:</strong> {formatDateTime(review.created_at)}</p>
                             </div>
 
                             <div className="lg:w-1/3 p-4">

@@ -22,6 +22,10 @@ body {
   font-family: 'Noto Sans Thai', sans-serif;
 }
 
+* {
+  color: #000000;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
