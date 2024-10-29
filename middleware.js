@@ -37,7 +37,7 @@ export async function middleware(req) {
   const userRole = token.role;
 
   // ถ้า role ไม่มีในระบบ ให้ redirect ไปหน้าเลือก role
-  if (!userRole && req.nextUrl.pathname !== '/role') {
+  if (!userRole || userRole !== "" && req.nextUrl.pathname !== '/role') {
     return NextResponse.redirect(new URL('/role', req.url));
   }
 
@@ -68,5 +68,5 @@ export async function middleware(req) {
 
 // matcher กำหนด route ที่จะใช้ middleware
 export const config = {
-  matcher: ['/', '/login', '/admin', '/role', '/technician/register', '/impervious', '/user', '/technician'],
+  matcher: ['/', '/login', '/admin', '/technician/register', '/impervious', '/user', '/technician'],
 };

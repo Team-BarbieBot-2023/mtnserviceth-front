@@ -27,9 +27,6 @@ export const authOptions = {
                     }),
                 });
 
-                console.log(response);
-
-
                 if (response.ok) {
                     return true; // ถ้าการสร้างผู้ใช้สำเร็จ
                 } else {

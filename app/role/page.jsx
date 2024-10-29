@@ -15,7 +15,6 @@ function Page() {
 
     const handleSubmit = async () => {
         setLoading(true);
-
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/users/role`, {
             method: 'POST',
             headers: {
