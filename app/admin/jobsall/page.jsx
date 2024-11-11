@@ -40,7 +40,7 @@ export default function Page() {
               tabContent: "group-data-[selected=true]:text-[#06b6d4]"
             }}
           >
-            <Tab
+            {/* <Tab
               key="pending"
               title={
                 <div className="flex items-center space-x-2">
@@ -54,7 +54,7 @@ export default function Page() {
                 <TablesJobByAdminComponent data={data.filter(o => o.status == 'pending')} fetchData={fetchData} />
               </CardBody>
               </Card>
-            </Tab>
+            </Tab> */}
             <Tab
               key="in_progress"
               title={

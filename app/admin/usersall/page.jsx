@@ -60,7 +60,7 @@ const fetchData = async ()=>{
             <div className="flex items-center space-x-2">
               <FontAwesomeIcon icon={faPersonCircleCheck} className="h-5 w-5" />
               <span>Users</span>
-              <Chip size="sm" color="warning" variant="shadow">{dataUser.length}</Chip>
+              <Chip size="sm" color="success" variant="shadow">{dataUser.length}</Chip>
             </div>
           }
         >
@@ -75,7 +75,7 @@ const fetchData = async ()=>{
             <div className="flex items-center space-x-2">
                 <FontAwesomeIcon icon={faPersonDigging} className="h-5 w-5" />
               <span>Technicians</span>
-              <Chip size="sm" color="success" variant="shadow">{dataTechnician.length}</Chip>
+              <Chip size="sm" color="warning" variant="shadow">{dataTechnician.length}</Chip>
             </div>
           }
         >

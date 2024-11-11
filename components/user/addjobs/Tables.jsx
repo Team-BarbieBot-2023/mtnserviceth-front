@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { faUserPlus, faUserXmark, faUserCheck, faUserClock } from "@fortawesome/free-solid-svg-icons";
 import { Tabs, Tab, Chip, Card, CardBody } from "@nextui-org/react";
 import TablesJobByUserComponent from "@/components/user/addjobs/TablesJobByUserComponent";
+import TablesJobCanceledByUserComponent from "@/components/user/addjobs/TablesJobCanceledByUserComponent";
 
 export default function Tables({ userId, model }) {
   const [data, setData] = useState(model);
@@ -100,7 +101,7 @@ export default function Tables({ userId, model }) {
         >
           <Card>
             <CardBody>
-              <TablesJobByUserComponent data={data.filter(o => o.status == 'canceled')} fetchData={fetchData} />
+              <TablesJobCanceledByUserComponent data={data.filter(o => o.status == 'canceled')} fetchData={fetchData} />
             </CardBody>
           </Card>
         </Tab>
