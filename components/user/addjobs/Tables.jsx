@@ -5,7 +5,7 @@ import { faUserPlus, faUserXmark, faUserCheck, faUserClock } from "@fortawesome/
 import { Tabs, Tab, Chip, Card, CardBody } from "@nextui-org/react";
 import TablesJobByUserComponent from "@/components/user/addjobs/TablesJobByUserComponent";
 import TablesJobCanceledByUserComponent from "@/components/user/addjobs/TablesJobCanceledByUserComponent";
-
+import TablesJobPendingByUserComponent from "@/components/user/addjobs/TablesJobPendingByUserComponent";
 export default function Tables({ userId, model }) {
   const [data, setData] = useState(model);
 
@@ -46,14 +46,14 @@ export default function Tables({ userId, model }) {
           title={
             <div className="flex items-center space-x-2">
               <FontAwesomeIcon icon={faUserPlus} className="h-5 w-5" />
-              <span>pending</span>
+              <span>Pending</span>
               <Chip size="sm" color="warning" variant="shadow">{data.filter(o => o.status == 'pending').length}</Chip>
             </div>
           }
         >
           <Card>
             <CardBody>
-              <TablesJobByUserComponent data={data.filter(o => o.status == 'pending')} fetchData={fetchData} />
+              <TablesJobPendingByUserComponent data={data.filter(o => o.status == 'pending')} fetchData={fetchData} />
             </CardBody>
           </Card>
         </Tab>
@@ -62,7 +62,7 @@ export default function Tables({ userId, model }) {
           title={
             <div className="flex items-center space-x-2">
               <FontAwesomeIcon icon={faUserClock} className="h-5 w-5" />
-              <span>in progress</span>
+              <span>In progress</span>
               <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'in_progress').length}</Chip>
             </div>
           }
@@ -78,7 +78,7 @@ export default function Tables({ userId, model }) {
           title={
             <div className="flex items-center space-x-2">
               <FontAwesomeIcon icon={faUserCheck} className="h-5 w-5" />
-              <span>completed</span>
+              <span>Completed</span>
               <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'completed').length}</Chip>
             </div>
           }
@@ -94,7 +94,7 @@ export default function Tables({ userId, model }) {
           title={
             <div className="flex items-center space-x-2">
               <FontAwesomeIcon icon={faUserXmark} className="h-5 w-5" />
-              <span>canceled</span>
+              <span>Canceled</span>
               <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'canceled').length}</Chip>
             </div>
           }

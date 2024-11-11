@@ -60,8 +60,8 @@ export default function Page() {
               title={
                 <div className="flex items-center space-x-2">
                   <FontAwesomeIcon icon={faUserClock} className="h-5 w-5" />
-                  <span>in progress</span>
-                  <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'in_progress').length}</Chip>
+                  <span>In progress</span>
+                  <Chip size="sm" color="warning" variant="shadow">{data.filter(o => o.status == 'in_progress').length}</Chip>
                 </div>
               }
             >
@@ -75,8 +75,8 @@ export default function Page() {
               title={
                 <div className="flex items-center space-x-2">
                   <FontAwesomeIcon icon={faUserCheck} className="h-5 w-5" />
-                  <span>completed</span>
-                  <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'completed').length}</Chip>
+                  <span>Completed</span>
+                  <Chip size="sm" color="success" variant="shadow">{data.filter(o => o.status == 'completed').length}</Chip>
                 </div>
               }
             >
@@ -90,8 +90,8 @@ export default function Page() {
               title={
                 <div className="flex items-center space-x-2">
                   <FontAwesomeIcon icon={faUserXmark} className="h-5 w-5" />
-                  <span>canceled</span>
-                  <Chip size="sm" color="primary" variant="shadow">{data.filter(o => o.status == 'canceled').length}</Chip>
+                  <span>Canceled</span>
+                  <Chip size="sm" color="danger" variant="shadow">{data.filter(o => o.status == 'canceled').length}</Chip>
                 </div>
               }
             >
