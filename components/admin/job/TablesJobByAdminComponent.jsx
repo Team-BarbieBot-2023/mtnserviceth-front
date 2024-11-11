@@ -112,6 +112,8 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
               if (columnKey === "button") {
                 value = <div className='flex'>
                        <div className="relative flex justify-end items-center gap-2">
+                        {
+                        !(item.status =='canceled' || item.status =='completed') &&
                         <Dropdown className="bg-background border-1 border-default-200">
                           <DropdownTrigger>
                             <Button isIconOnly radius="full" size="sm" variant="light">
@@ -131,7 +133,8 @@ export default function TablesJobByAdminComponent({ data, fetchData }) {
                               </DropdownItem>
                             )}
                           </DropdownMenu>
-                        </Dropdown>
+                        </Dropdown>                        
+                        }
                       </div>
                 </div>;
               }  
