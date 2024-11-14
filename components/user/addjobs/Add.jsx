@@ -11,7 +11,7 @@ export default function Add({ onClose }) {
         job_title: '',
         job_type: 'ซ่อม',
         scheduled_datetime: '',
-        urgency: 'ปกติ',
+        urgency: 'ด่วน',
         job_description: '',
         customer_details: {
             house_number: '',
@@ -54,13 +54,13 @@ export default function Add({ onClose }) {
     const handleSelectionChangeUrgency = (e) => {
         switch (e.target.value) {
             case "urgent":
-                formData.urgency = "ด่วน"
+                formData.urgency = "ด่วนพิเศษ"
                 break;
             case "normal":
-                formData.urgency = "ปกติ"
+                formData.urgency = "ด่วน"
                 break;
             case "not_urgent":
-                formData.urgency = "ไม่รีบ"
+                formData.urgency = "ปกติ"
                 break;
         }
     };
@@ -95,7 +95,7 @@ export default function Add({ onClose }) {
 
         const customerDetails = { ...formData.customer_details };
         const imgDescription = formData.img_description.map(({ file }) => file.name);
-
+        console.log(formData.urgency);
         const data = new FormData();
         data.append('user_id', session.user._id);
         data.append('phone', formData.phone);
@@ -146,7 +146,12 @@ export default function Add({ onClose }) {
                             label="Phone"
                             placeholder="Enter phone number"
                             fullWidth
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d*$/.test(value)) {
+                                    handleChange(e);
+                                }
+                            }}
                         />
                         <Input
                             isRequired
@@ -186,14 +191,14 @@ export default function Add({ onClose }) {
                             onChange={handleSelectionChangeUrgency}
                             defaultSelectedKeys={["normal"]}
                         >
-                            <SelectItem key="urgent" value="ด่วน">
+                            <SelectItem key="urgent" value="ด่วนพิเศษ">
+                                ด่วนพิเศษ
+                            </SelectItem>
+                            <SelectItem key="normal" value="ด่วน">
                                 ด่วน
                             </SelectItem>
-                            <SelectItem key="normal" value="ปกติ">
+                            <SelectItem key="not_urgent" value="ปกติ">
                                 ปกติ
-                            </SelectItem>
-                            <SelectItem key="not_urgent" value="ไม่รีบ">
-                                ไม่รีบ
                             </SelectItem>
                         </Select>
                         <Textarea

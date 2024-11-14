@@ -104,8 +104,13 @@ export default function Editprofile({ data }) {
                   disabled={!isEditing}
                   name="phone"
                   label="Phone"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   value={formData.phone}
-                  onChange={handleChange}
                   placeholder="Enter your phone number"
                   fullWidth
                 />
@@ -122,8 +127,14 @@ export default function Editprofile({ data }) {
                   disabled={!isEditing}
                   name="national_id"
                   label="National ID"
+                  type="text"
                   value={formData.national_id}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   placeholder="Enter your national ID"
                   fullWidth
                 />

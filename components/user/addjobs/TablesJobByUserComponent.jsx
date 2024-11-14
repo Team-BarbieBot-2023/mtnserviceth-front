@@ -7,15 +7,15 @@ import {
 } from "@nextui-org/react";
 import ModalActionComponent from "@/components/admin/complaint/ModalActionComponent";
 import { useRouter } from "next/navigation";
+
 export default function TablesJobByUserComponent({ data, fetchData }) {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [objData, setObjData] = useState(null)
+  const [objData, setObjData] = useState(null);
   const [page, setPage] = useState(1);
   const rowsPerPage = 13;
 
   const validData = Array.isArray(data) ? data : [];
-
   const pages = validData.length > 0 ? Math.ceil(validData.length / rowsPerPage) : 1;
 
   const items = React.useMemo(() => {
@@ -62,8 +62,7 @@ export default function TablesJobByUserComponent({ data, fetchData }) {
                       avatarProps={{ radius: "lg", src: item.user_image }}
                       description={item.user_email}
                       name={item.user_name}
-                    >
-                    </User>
+                    />;
                 }
                 if (columnKey === "technician" && item.technician_id > 0) {
                   value =
@@ -71,24 +70,26 @@ export default function TablesJobByUserComponent({ data, fetchData }) {
                       avatarProps={{ radius: "lg", src: item.technician_image }}
                       description={item.technician_email}
                       name={item.technician_name}
-                    >
-                    </User>
+                    />;
                 }
                 if (columnKey === "technician_level") {
-                  value = item.technician_level ? String(item.technician_level) + "/5" : ""
+                  value = item.technician_level ? `${item.technician_level}/5` : "";
                 }
                 if (columnKey === "button") {
-                  value = <div className='flex'>
-                    {item.status !== 'pending' ? (
-                      <Button onClick={() => router.push(`/complaints/${Number(item.job_id)}/create`)}
-                        className='px-[10px] py-[0]'
-                        color="warning"
-                        variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>Complaint</Button>
-                    ) : (<p></p>)}
-                  </div>;
+                  value = (
+                    <div className='flex'>
+                      {item.status !== 'pending' && item.completion_num !== "1" ? (
+                        <Button onClick={() => router.push(`/complaints/${Number(item.job_id)}/create`)}
+                          className='px-[10px] py-[0]'
+                          color="warning"
+                          variant="light" startContent={<FontAwesomeIcon icon={faPersonHarassing} />}>
+                          Complaint
+                        </Button>
+                      ) : (<p></p>)}
+                    </div>
+                  );
                 }
-                const cellAlignment = "text-left"
-                return <TableCell className={cellAlignment}>{value}</TableCell>;
+                return <TableCell className="text-left">{value}</TableCell>;
               }}
             </TableRow>
           )}
@@ -100,8 +101,5 @@ export default function TablesJobByUserComponent({ data, fetchData }) {
         fetchData={fetchData}
         obj={objData} />
     </>
-
   );
 }
-
-

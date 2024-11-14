@@ -106,7 +106,12 @@ export default function Page() {
                     <p className="text-sm font-normal text-gray-600 mb-5">Please provide your personal details below.</p>
                     <form onSubmit={handleSubmit}>
                         <div className="text-left mb-1 grid grid-cols-3 gap-4">
-                            <Input name="phone" label="Phone" placeholder="Enter your phone number" fullWidth onChange={handleInputChange} />
+                            <Input name="phone" label="Phone" placeholder="Enter your phone number" fullWidth onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d*$/.test(value)) {
+                                    handleInputChange(e);
+                                }
+                            }} />
                             <Input name="emergencyContact" label="Emergency Contact" placeholder="Enter emergency contact" fullWidth onChange={handleInputChange} />
                             <Input name="nationalId" label="National ID" placeholder="Enter your national ID" fullWidth onChange={handleInputChange} />
                             <Textarea name="addressId" label="Address (ID Card)" placeholder="Enter address on ID card" fullWidth className="col-span-3" onChange={handleInputChange} />

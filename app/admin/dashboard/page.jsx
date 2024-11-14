@@ -5,6 +5,7 @@ const getData = async () => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/dashboard`, {
       method: 'GET',
+      cache: 'no-store'
     });
 
     if (!response.ok) {
@@ -17,6 +18,7 @@ const getData = async () => {
     return null;
   }
 };
+
 export default async function Page() {
   const data = await getData();
   return (

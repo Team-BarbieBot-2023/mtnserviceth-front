@@ -20,6 +20,7 @@ export default function Notification({ userId }) {
             }
 
             const result = await response.json();
+            console.log(result)
             setData(result);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -30,7 +31,7 @@ export default function Notification({ userId }) {
 
     useEffect(() => {
         if (userId) {
-            getData(userId);
+           getData(userId);
         }
     }, [userId]);
 
